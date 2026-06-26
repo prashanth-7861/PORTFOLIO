@@ -780,13 +780,19 @@ ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<ResumeTweaks
           <span class="project-tech-tag">AES-256-GCM-SIV</span>
           <span class="project-tech-tag">ChaCha20-Poly1305</span>
           <span class="project-tech-tag">Argon2id</span>
-          <span class="project-tech-tag">TypeScript</span>
+          <span class="project-tech-tag">HKDF-SHA512</span>
+          <span class="project-tech-tag">TOTP RFC 6238</span>
+          <span class="project-tech-tag">RBAC</span>
+          <span class="project-tech-tag">Hash-chained Audit</span>
           <span class="project-tech-tag">nftables</span>
+          <span class="project-tech-tag">fail2ban</span>
         </div>
         <div class="entry-bullets">
-          <div class="entry-bullet"><div class="bullet-dot"></div>Production-grade WireGuard automation with dual-layer AEAD vault — zero plaintext secrets ever written to disk</div>
-          <div class="entry-bullet"><div class="bullet-dot"></div>Argon2id KDF (256 MiB memory cost, ≥500ms calibrated); TOTP 2FA; LUKS-style multi-admin keyslots; ephemeral peer TTLs</div>
-          <div class="entry-bullet"><div class="bullet-dot"></div>Cross-platform (Linux x86_64/ARM64, macOS arm64, Windows); 231 commits · 31 releases · pip-audit CI supply-chain checks</div>
+          <div class="entry-bullet"><div class="bullet-dot"></div>Security-audited v1.0.0 zero-trust WireGuard gateway with published threat model, source-level audit report, and disclosed vulnerability remediation — full SSDLC artifact set</div>
+          <div class="entry-bullet"><div class="bullet-dot"></div>Dual-layer AEAD vault: ChaCha20-Poly1305 (inner) + AES-256-GCM-SIV (outer) with HKDF-SHA512 key separation and 76-byte header AAD; Argon2id KDF (256 MiB, ≥500ms calibrated)</div>
+          <div class="entry-bullet"><div class="bullet-dot"></div>RFC 6238 TOTP 2FA (256-bit CSPRNG secrets, anti-replay) · LUKS-style multi-admin keyslots · 15+ privilege RBAC · TTL + auto-revoke on expiry</div>
+          <div class="entry-bullet"><div class="bullet-dot"></div>SHA-256 hash-chained tamper-evident audit log · localhost-only API · rate-limited (5 unlock / 5-min) · CORS-restricted</div>
+          <div class="entry-bullet"><div class="bullet-dot"></div>Cross-platform (Linux x86_64/ARM64, macOS arm64, Windows, Raspberry Pi) · 295 commits · 59 releases · pinned SHA-256 deps · pip-audit on every CI push</div>
         </div>
       </div>
 

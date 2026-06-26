@@ -2,13 +2,14 @@
 window.PORTFOLIO = {
   name: "Prashanth Mudigonda",
   taglines: [
-    "SOC / Network Security Analyst",
+    "Cybersecurity Analyst — SOC / SIEM / Detection Engineering",
+    "Network Security & Traffic Analysis",
     "Ethical Hacker — C|EH v12 Training",
-    "Digital Forensics Specialist",
+    "Digital Forensics & Incident Response",
     "Penetration Tester",
     "Malware Analyst"
   ],
-  about: "MS Cybersecurity graduate (3.79 GPA) — 1,000+ hours deep in Kali Linux, Metasploit, Wireshark, and live attack simulations. I don't just study threats; I've hunted them through real traffic, reverse-engineered binaries, and built production-grade cryptographic tooling from first principles. From kernel hardening to dual-layer AES vault architecture, I bring systems-level depth that turns day-one ramp-up into immediate impact for SOC and network security teams.",
+  about: "MS Cybersecurity graduate from Auburn University (3.79 GPA) and security engineer behind WireSeal v1.0.0 — a security-audited, zero-trust VPN gateway (295 commits, 59 releases). 1,000+ hours deep in Kali Linux, Metasploit, Wireshark, Splunk/Elastic, MITRE ATT&CK-mapped detection engineering, and live attack simulations. I don't just study threats; I've hunted them through real traffic, reverse-engineered binaries, and built production-grade cryptographic tooling (dual-layer AEAD vault, Argon2id KDF, hash-chained audit log, TOTP 2FA, RBAC) from first principles. From kernel hardening to source-level security audits, I bring systems-level depth that turns day-one ramp-up into immediate impact for SOC, blue-team, and incident-response teams.",
   location: "Alpharetta, GA, USA",
   github: "https://github.com/prashanth-7861",
   linkedin: "https://www.linkedin.com/in/mudigondaprashanth",
@@ -40,18 +41,20 @@ window.PORTFOLIO = {
       name: "WireSeal",
       featured: true,
       category: ["Security Tools", "Automation"],
-      tagline: "WireGuard server automation — zero plaintext secrets on disk",
-      description: "Production-grade VPN automation tool with dual-layer encrypted vault (AES-256-GCM-SIV + ChaCha20-Poly1305), Argon2id KDF, LUKS-style multi-admin keyslots, TOTP 2FA, ephemeral client TTLs, and a full web dashboard. Zero-trust network access across Linux, macOS, and Windows.",
+      tagline: "Security-audited zero-trust WireGuard gateway — v1.0.0",
+      description: "Security-audited (v1.0.0) zero-trust VPN gateway with full SSDLC artifacts: published threat model, source-level security audit, and disclosed vulnerability remediation. Dual-layer AEAD vault, Argon2id KDF, TOTP 2FA, 15+ privilege RBAC, and a hash-chained tamper-evident audit log. Zero plaintext secrets on disk across Linux, macOS, Windows, and Raspberry Pi.",
       highlights: [
-        "Dual-layer AEAD vault: ChaCha20-Poly1305 + AES-256-GCM-SIV",
-        "Argon2id KDF — 256 MiB memory cost, calibrated ≥500ms",
-        "ZTNA: role-based access, TOTP 2FA, ephemeral peer TTLs",
-        "Cross-platform: Linux x86_64/ARM64, macOS arm64, Windows x86_64",
-        "231 commits · 31 releases · pip-audit CI supply-chain security"
+        "Security-audited v1.0.0 — published threat model + audit report + remediation log",
+        "Dual-layer AEAD vault: ChaCha20-Poly1305 + AES-256-GCM-SIV, Argon2id KDF (256 MiB)",
+        "RFC 6238 TOTP 2FA, PBKDF2 backup codes, LUKS-style multi-admin keyslots",
+        "15+ privilege RBAC, TTL-based client expiry with auto-revoke",
+        "SHA-256 hash-chained audit log, localhost-only API, rate-limited",
+        "Server hardening: rp_filter, fail2ban, nftables, mlock, RLIMIT_CORE=0"
       ],
-      tech: ["Python", "WireGuard", "AES-256-GCM-SIV", "ChaCha20-Poly1305", "Argon2id", "TypeScript", "nftables"],
+      tech: ["Python", "WireGuard", "AES-256-GCM-SIV", "ChaCha20-Poly1305", "Argon2id", "TOTP", "nftables", "TypeScript"],
       github: "https://github.com/prashanth-7861/WireSeal",
-      stats: { commits: 231, releases: 31, lang: "Python 58.7% · TypeScript 32.4% · Shell 4.8%" }
+      live: "https://wireseal.vercel.app",
+      stats: { commits: 295, releases: 59, version: "v1.0.0", lang: "Python 60.9% · TypeScript 32.7% · Shell 3.5%" }
     },
     {
       id: "file-sig",

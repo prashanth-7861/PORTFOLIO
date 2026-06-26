@@ -53,38 +53,45 @@ function FeaturedProject({ project }) {
               <GitLinkSVG /> View on GitHub
             </a>
           )}
+          {project.live && (
+            <a href={project.live} target="_blank" rel="noopener" className="project-github-btn" style={{marginLeft: 10, background: 'transparent', border: '1.5px solid var(--accent)', color: 'var(--accent)', boxShadow: 'none'}}>
+              Live Demo ↗
+            </a>
+          )}
         </div>
 
         <div className="featured-right">
           <div className="featured-code-window">
             <div className="fw-titlebar">
               <div className="fw-dots"><span></span><span></span><span></span></div>
-              <span className="fw-title">wireseal init</span>
+              <span className="fw-title">wireseal v1.0.0 — audited</span>
             </div>
             <div className="fw-body">
               <div className="fw-line"><span className="fw-prompt">$</span> <span className="fw-cmd">sudo wireseal init --subnet 10.0.0.1/24</span></div>
-              <div className="fw-line fw-comment">  # Initializing WireSeal vault...</div>
-              <div className="fw-line fw-out">  ✓ Argon2id KDF: 256 MiB · 13 iterations</div>
+              <div className="fw-line fw-comment">  # initializing v1.0.0 vault...</div>
+              <div className="fw-line fw-out">  ✓ Argon2id KDF: 256 MiB · t=13 · p=4</div>
               <div className="fw-line fw-out">  ✓ Layer 1: ChaCha20-Poly1305 [inner]</div>
               <div className="fw-line fw-out">  ✓ Layer 2: AES-256-GCM-SIV   [outer]</div>
-              <div className="fw-line fw-out">  ✓ Server keypair generated (vault-only)</div>
-              <div className="fw-line fw-out">  ✓ Firewall: nftables + NAT masquerade</div>
-              <div className="fw-line fw-out">  ✓ WireGuard interface wg0 up</div>
+              <div className="fw-line fw-out">  ✓ HKDF-SHA512 · 76-byte AAD binding</div>
+              <div className="fw-line fw-out">  ✓ Server keypair (vault-only)</div>
+              <div className="fw-line fw-out">  ✓ Firewall: nftables + NAT</div>
+              <div className="fw-line fw-out">  ✓ Hardening: fail2ban · mlock</div>
               <div className="fw-line fw-success">  ✓ Zero plaintext secrets on disk</div>
               <div className="fw-line"><span className="fw-prompt">$</span> <span className="fw-cmd">sudo wireseal add-client alice</span></div>
-              <div className="fw-line fw-out">  ✓ alice → 10.0.0.2 (PSK: os.urandom(32))</div>
-              <div className="fw-line fw-out">  ✓ QR code ready · auto-clears in 60s</div>
+              <div className="fw-line fw-out">  ✓ alice -> 10.0.0.2 (PSK: 32B)</div>
+              <div className="fw-line fw-out">  ✓ QR ready · auto-clears in 60s</div>
+              <div className="fw-line fw-out">  ✓ Audit log: SHA-256 chained</div>
               <div className="fw-line fw-blink">▋</div>
             </div>
           </div>
 
           <div className="featured-lang-bar">
-            <div className="lang-title">Languages</div>
+            <div className="lang-title">Languages · 295 commits · 59 releases</div>
             {[
-              { name: 'Python', pct: 58.7, color: '#d97706' },
-              { name: 'TypeScript', pct: 32.4, color: '#06b6d4' },
-              { name: 'Shell', pct: 4.8, color: '#8b5cf6' },
-              { name: 'Other', pct: 4.1, color: '#94a3b8' }
+              { name: 'Python', pct: 60.9, color: '#d97706' },
+              { name: 'TypeScript', pct: 32.7, color: '#06b6d4' },
+              { name: 'Shell', pct: 3.5, color: '#8b5cf6' },
+              { name: 'Other', pct: 2.9, color: '#94a3b8' }
             ].map(l => (
               <div key={l.name} className="lang-row">
                 <span className="lang-name">{l.name}</span>
@@ -141,30 +148,30 @@ function ProjectCard({ project }) {
 
 function ShowcaseProject({ project, flip }) {
   const termLines = project.id === 'log-analyzer' ? [
-    { type: 'cmd', text: 'python main.py --input samples/sample.evtx --type evtx' },
-    { type: 'comment', text: '  # parsing Windows Event Log (binary .evtx)...' },
-    { type: 'out', text: '  [4625] failed login: user=admin  src=192.168.1.45' },
-    { type: 'out', text: '  [4625] failed login ×12 in 60s  src=192.168.1.45' },
-    { type: 'alert', text: '  ⚠ ALERT: Brute Force  [TA0006 · Credential Access]' },
-    { type: 'out', text: '  [4624] successful login after failures: user=admin' },
-    { type: 'alert', text: '  ⚠ ALERT: Login After Failures  [TA0008]' },
-    { type: 'out', text: '  [4672] special privileges assigned: user=admin' },
-    { type: 'alert', text: '  ⚠ ALERT: Privilege Escalation  [TA0004]' },
-    { type: 'success', text: '  ✓ 3 correlated alerts  →  alerts_report.html' },
-    { type: 'success', text: '  ✓ alerts_report.json + alerts_report.csv saved' },
+    { type: 'cmd', text: 'python main.py --input sample.evtx' },
+    { type: 'comment', text: '  # parsing Windows Event Log (evtx)...' },
+    { type: 'out', text: '  [4625] failed login: admin  src=10.0.0.45' },
+    { type: 'out', text: '  [4625] failed login x12 in 60s' },
+    { type: 'alert', text: '  WARN Brute Force  [TA0006]' },
+    { type: 'out', text: '  [4624] success: admin  src=10.0.0.45' },
+    { type: 'alert', text: '  WARN Login After Failures  [TA0008]' },
+    { type: 'out', text: '  [4672] special privileges: admin' },
+    { type: 'alert', text: '  WARN Privilege Escalation  [TA0004]' },
+    { type: 'success', text: '  3 correlated alerts -> report.html' },
+    { type: 'success', text: '  alerts.json + alerts.csv saved' },
   ] : [
-    { type: 'cmd', text: 'python file_sig_analyzer.py suspicious_file' },
+    { type: 'cmd', text: 'python file_sig_analyzer.py unknown.bin' },
     { type: 'comment', text: '  # reading magic bytes from binary...' },
-    { type: 'out', text: '  offset 0x00: PK\\x03\\x04  → ZIP family detected' },
-    { type: 'out', text: '  deep content scan: [Content_Types].xml found' },
-    { type: 'out', text: '  word/document.xml  → DOCX body confirmed' },
-    { type: 'success', text: '  ✓ RESULT: Microsoft Word Document (.docx)' },
-    { type: 'comment', text: '  # file had no extension — extension spoofed' },
+    { type: 'out', text: '  offset 0x00: PK\\x03\\x04 -> ZIP family' },
+    { type: 'out', text: '  [Content_Types].xml found' },
+    { type: 'out', text: '  word/document.xml -> DOCX body' },
+    { type: 'success', text: '  RESULT: Microsoft Word (.docx)' },
+    { type: 'comment', text: '  # file had no extension' },
     { type: 'cmd', text: 'python file_sig_analyzer.py archive.jpg' },
-    { type: 'out', text: '  offset 0x00: PK\\x03\\x04  → ZIP / EPUB / DOCX' },
-    { type: 'out', text: '  ambiguous: 3 matching signatures' },
-    { type: 'out', text: '  creating: archive_zip.zip, archive_epub.epub' },
-    { type: 'success', text: '  ✓ report saved → analysis_report.txt' },
+    { type: 'out', text: '  PK\\x03\\x04 -> ZIP / EPUB / DOCX' },
+    { type: 'out', text: '  ambiguous: 3 signatures match' },
+    { type: 'out', text: '  creating: archive_zip.zip' },
+    { type: 'success', text: '  report saved -> analysis.txt' },
   ];
 
   const filename = project.id === 'log-analyzer' ? 'main.py — alert-triage' : 'file_sig_analyzer.py';

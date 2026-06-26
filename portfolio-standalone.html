@@ -1,0 +1,3531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- standalone bundle - works from file:// and web -->
+<title>Prashanth Mudigonda — Cybersecurity Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+/* ── TOKENS ─────────────────────────────────────────────── */
+:root {
+  --accent: #d97706;
+  --accent-light: #fbbf24;
+  --accent-glow: rgba(217,119,6,0.15);
+  --bg: #f7f8fc;
+  --bg2: #eef0f6;
+  --surface: #ffffff;
+  --surface2: #f1f3f9;
+  --border: #e2e6f0;
+  --text: #0f172a;
+  --text2: #475569;
+  --text3: #94a3b8;
+  --sidebar-w: 240px;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-head: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-md: 0 6px 24px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+}
+[data-theme="dark"] {
+  --bg: #0d1117;
+  --bg2: #0a0e14;
+  --surface: #161b22;
+  --surface2: #1c2230;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text2: #8b949e;
+  --text3: #484f58;
+  --shadow: 0 2px 12px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-md: 0 6px 24px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.25);
+}
+
+/* ── RESET ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ── LAYOUT ──────────────────────────────────────────────── */
+.portfolio-root { display: flex; min-height: 100vh; }
+
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-w);
+  min-width: 0;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────────────── */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 28px 0 20px;
+  z-index: 100;
+  transition: background 0.3s, border-color 0.3s;
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px 0;
+}
+.sidebar-avatar {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+.sidebar-identity { display: flex; flex-direction: column; }
+.sidebar-fname { font-family: var(--font-head); font-weight: 600; font-size: 14px; color: var(--text); line-height: 1.2; }
+.sidebar-lname { font-size: 12px; color: var(--text3); letter-spacing: 0.02em; }
+
+.sidebar-divider { height: 1px; background: var(--border); margin: 18px 20px; }
+
+.sidebar-nav { display: flex; flex-direction: column; gap: 2px; padding: 0 10px; }
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--text2);
+  transition: all 0.15s;
+  position: relative;
+  text-align: left;
+  width: 100%;
+}
+.nav-btn:hover { background: var(--bg2); color: var(--text); }
+.nav-btn.active {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent);
+  font-weight: 500;
+}
+.nav-icon { font-size: 11px; opacity: 0.6; flex-shrink: 0; }
+.nav-btn.active .nav-icon { opacity: 1; }
+.nav-pip {
+  position: absolute; right: 10px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.nav-btn.active .nav-pip { opacity: 1; }
+
+.sidebar-spacer { flex: 1; min-height: 20px; }
+
+.terminal-btn {
+  display: flex; align-items: center; gap: 8px;
+  margin: 0 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text2);
+  transition: all 0.15s;
+  font-family: var(--font-mono);
+}
+.terminal-btn:hover { background: var(--bg2); color: var(--accent); }
+.term-hint { margin-left: auto; font-size: 10px; opacity: 0.4; font-family: var(--font-mono); }
+
+.sidebar-socials { display: flex; flex-direction: column; gap: 4px; padding: 0 10px; margin-top: 8px; }
+.social-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text2);
+  transition: all 0.15s;
+}
+.social-link:hover { background: var(--bg2); color: var(--accent); }
+
+.resume-btn {
+  display: flex; align-items: center; gap: 8px;
+  margin: 4px 10px 0;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: #fff;
+  background: var(--accent);
+  transition: all 0.15s;
+  font-family: var(--font-head);
+  font-weight: 500;
+}
+.resume-btn:hover { filter: brightness(1.1); }
+
+/* Mobile */
+.mobile-menu-btn {
+  display: none;
+  position: fixed; top: 16px; left: 16px;
+  z-index: 200;
+  width: 40px; height: 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px;
+}
+.theme-toggle {
+  display: flex; align-items: center; gap: 8px;
+  margin: 8px 10px 0;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text2);
+  transition: all 0.15s;
+}
+.theme-toggle:hover { background: var(--bg2); color: var(--text); }
+.sidebar-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 99;
+}
+
+/* ── SECTIONS ────────────────────────────────────────────── */
+.section { padding: 80px 56px; border-bottom: 1px solid var(--border); }
+.section:last-child { border-bottom: none; }
+.section-inner { max-width: 900px; }
+
+.fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.hero-section.visible .fade-up { opacity: 1; transform: translateY(0); }
+
+.section-header { margin-bottom: 40px; }
+.section-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: var(--font-head);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* ── HERO ────────────────────────────────────────────────── */
+.hero-section { padding: 72px 56px 56px; min-height: 90vh; display: flex; flex-direction: column; justify-content: center; }
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 56px;
+  align-items: flex-start;
+  max-width: 900px;
+}
+
+.hero-photo-col { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.hero-photo-frame {
+  position: relative;
+  width: 168px; height: 168px;
+  flex-shrink: 0;
+}
+.hero-photo {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--border);
+  position: relative;
+  z-index: 1;
+}
+.hero-photo-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0.5;
+}
+
+.hero-status {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 11.5px; font-weight: 500;
+  color: var(--text2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.status-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34,197,94,0.2);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(34,197,94,0.2); }
+  50% { box-shadow: 0 0 0 5px rgba(34,197,94,0.08); }
+}
+
+.hero-text-col { padding-top: 4px; }
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.hero-name {
+  font-family: var(--font-head);
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.hero-last { color: var(--accent); }
+
+.hero-typed-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text2);
+  min-height: 30px;
+  margin-bottom: 20px;
+  white-space: nowrap;
+  overflow: visible;
+}
+.typed-text { color: var(--text); }
+.typed-cursor {
+  color: var(--accent);
+  animation: blink 1s step-end infinite;
+  font-weight: 300;
+}
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+.hero-about {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text2);
+  max-width: 520px;
+  text-wrap: pretty;
+  margin-bottom: 24px;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.hero-meta-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--text3);
+  font-family: var(--font-mono);
+}
+
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 10px; }
+.cta-primary {
+  display: inline-flex; align-items: center;
+  padding: 11px 22px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-head);
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px var(--accent-glow);
+}
+.cta-primary:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 4px 16px var(--accent-glow); }
+.cta-secondary {
+  display: inline-flex; align-items: center;
+  padding: 11px 22px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-head);
+  transition: all 0.15s;
+}
+.cta-secondary:hover { background: var(--bg2); border-color: var(--accent); color: var(--accent); }
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+  max-width: 900px;
+}
+.hero-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text2);
+  letter-spacing: 0.04em;
+  transition: all 0.15s;
+}
+.hero-badge:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── SKILLS ──────────────────────────────────────────────── */
+.skills-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.radar-col { display: flex; justify-content: center; }
+.radar-svg { width: 100%; max-width: 360px; height: auto; }
+
+.skill-cats-col { display: flex; flex-direction: column; gap: 20px; }
+.skill-cat {}
+.skill-cat-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+.skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.skill-tag {
+  font-size: 12.5px;
+  padding: 4px 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text2);
+  transition: all 0.15s;
+  font-family: var(--font-mono);
+}
+.skill-tag:hover { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, var(--surface2)); }
+
+/* ── PROJECTS ────────────────────────────────────────────── */
+.featured-project {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 48px;
+  box-shadow: var(--shadow);
+  position: relative;
+}
+.featured-badge {
+  position: absolute; top: 16px; left: 16px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.featured-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 0;
+}
+.featured-left { padding: 36px 36px 36px 36px; border-right: 1px solid var(--border); min-width: 0; }
+.featured-right { padding: 24px; display: flex; flex-direction: column; gap: 20px; background: var(--surface2); min-width: 0; }
+
+.featured-lock { margin-bottom: 16px; }
+.featured-name {
+  font-family: var(--font-head);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+.featured-tagline {
+  font-size: 14px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  margin-bottom: 14px;
+}
+.featured-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text2);
+  margin-bottom: 20px;
+  text-wrap: pretty;
+}
+.featured-highlights { display: flex; flex-direction: column; gap: 7px; margin-bottom: 20px; }
+.highlight-item { display: flex; gap: 10px; font-size: 13.5px; color: var(--text2); align-items: flex-start; }
+.highlight-item > span:last-child { flex: 1; min-width: 0; }
+.highlight-tick { color: var(--accent); flex-shrink: 0; font-size: 11px; line-height: 1.7; }
+.featured-stats { display: flex; gap: 12px; margin-bottom: 18px; }
+.stat-pill {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 10px 18px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.stat-n { font-family: var(--font-head); font-size: 22px; font-weight: 700; color: var(--accent); }
+.stat-l { font-size: 11px; color: var(--text3); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; }
+.featured-tech { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
+.tech-tag {
+  font-size: 11.5px;
+  padding: 3px 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text2);
+  font-family: var(--font-mono);
+}
+.tech-tag.accent {
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface2));
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+  color: var(--accent);
+}
+.project-github-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px;
+  background: var(--text);
+  color: var(--bg);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.project-github-btn:hover { opacity: 0.85; }
+
+/* Code window */
+.featured-code-window {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+.fw-titlebar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+.fw-dots { display: flex; gap: 5px; }
+.fw-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
+.fw-title { font-size: 11px; color: var(--text3); }
+.fw-body { padding: 14px 14px; line-height: 1.7; overflow-x: hidden; max-height: 460px; overflow-y: auto; }
+.fw-body::-webkit-scrollbar { width: 6px; }
+.fw-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.fw-line { white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; }
+.fw-prompt { color: var(--accent); font-weight: 500; }
+.fw-cmd { color: var(--text); }
+.fw-comment { color: var(--text3); }
+.fw-alert { color: #f59e0b; font-weight: 500; }
+.fw-out { color: #22c55e; }
+.fw-success { color: #22c55e; font-weight: 500; }
+.fw-blink { color: var(--accent); animation: blink 1s step-end infinite; }
+
+/* Lang bar */
+.featured-lang-bar { display: flex; flex-direction: column; gap: 8px; }
+.lang-title { font-size: 11px; font-family: var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
+.lang-row { display: flex; align-items: center; gap: 10px; }
+.lang-name { font-size: 12px; color: var(--text2); width: 80px; flex-shrink: 0; font-family: var(--font-mono); }
+.lang-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.lang-fill { height: 100%; border-radius: 2px; transition: width 1s ease; }
+.lang-pct { font-size: 11px; color: var(--text3); width: 36px; text-align: right; font-family: var(--font-mono); }
+
+/* Project filter */
+.projects-subheader {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 12px;
+  margin-bottom: 24px; justify-content: space-between;
+}
+.projects-sub-title {
+  font-family: var(--font-head);
+  font-size: 20px; font-weight: 600; color: var(--text);
+}
+.filter-btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.filter-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  background: var(--surface);
+  transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 16px;
+}
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: flex; flex-direction: column;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+}
+.project-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: color-mix(in srgb, var(--accent) 30%, var(--border)); }
+.pc-header { margin-bottom: 12px; }
+.pc-cats { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+.pc-cat {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  padding: 2px 7px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent);
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+.pc-name { font-family: var(--font-head); font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+.pc-tagline { font-size: 13px; color: var(--text2); line-height: 1.5; }
+.pc-body { margin-bottom: 16px; flex: 1; }
+.pc-desc { font-size: 13px; color: var(--text2); line-height: 1.65; margin-bottom: 12px; text-wrap: pretty; }
+.pc-highlights { display: flex; flex-direction: column; gap: 6px; }
+.pc-hl { display: flex; gap: 8px; font-size: 12.5px; color: var(--text2); align-items: baseline; line-height: 1.5; }
+.pc-hl-dot { color: var(--accent); font-size: 10px; flex-shrink: 0; margin-top: 2px; }
+.pc-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.pc-tech { display: flex; flex-wrap: wrap; gap: 4px; }
+.pc-actions { display: flex; align-items: center; gap: 8px; }
+.pc-link {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  transition: all 0.15s;
+}
+.pc-link:hover { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface2)); }
+.tech-tag.muted { opacity: 0.55; }
+
+/* ── EDUCATION ───────────────────────────────────────────── */
+.edu-timeline { display: flex; flex-direction: column; gap: 0; }
+.edu-item { display: flex; gap: 20px; padding-bottom: 36px; }
+.edu-timeline-col { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; padding-top: 6px; }
+.edu-dot {
+  width: 13px; height: 13px; border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+  flex-shrink: 0;
+}
+.edu-line { flex: 1; width: 2px; background: var(--border); margin-top: 8px; }
+.edu-card {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 26px;
+  box-shadow: var(--shadow);
+}
+.edu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+.edu-years { font-family: var(--font-mono); font-size: 12px; color: var(--text3); }
+.edu-gpa-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 9px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.edu-school { font-family: var(--font-head); font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.edu-location { font-size: 12.5px; color: var(--text3); font-family: var(--font-mono); margin-bottom: 6px; }
+.edu-degree { font-size: 14px; color: var(--accent); font-weight: 500; margin-bottom: 14px; }
+.edu-courses { display: flex; flex-wrap: wrap; gap: 6px; }
+.course-tag {
+  font-size: 12px;
+  padding: 3px 9px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text2);
+}
+
+/* ── CERTIFICATIONS ──────────────────────────────────────── */
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+}
+.cert-card {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.cert-card:hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--border)); box-shadow: var(--shadow-md); }
+.cert-card.in-progress { border-style: dashed; }
+.cert-badge {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.03em;
+}
+.cert-info { flex: 1; }
+.cert-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.cert-org { font-size: 12px; color: var(--text3); font-family: var(--font-mono); }
+.cert-check { color: #22c55e; font-size: 16px; flex-shrink: 0; }
+.cert-status {
+  font-size: 10.5px; font-family: var(--font-mono);
+  padding: 3px 8px;
+  background: rgba(251,191,36,0.12);
+  color: #d97706;
+  border-radius: 20px;
+  border: 1px solid rgba(251,191,36,0.3);
+  flex-shrink: 0;
+}
+.cert-training {
+  font-size: 10.5px; font-family: var(--font-mono);
+  padding: 3px 8px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--accent);
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  flex-shrink: 0;
+}
+
+/* Showcase project */
+.showcase-project {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow);
+}
+.showcase-inner {
+  grid-template-columns: 400px 1fr !important;
+}
+.showcase-right {
+  padding: 24px;
+  background: var(--surface2);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 20px;
+}
+.showcase-info {
+  border-right: none !important;
+  border-left: 1px solid var(--border) !important;
+}
+@media (max-width: 900px) {
+  .showcase-inner { grid-template-columns: 1fr !important; }
+  .showcase-right { border-right: none; border-bottom: 1px solid var(--border); }
+  .showcase-info { border-left: none !important; border-top: 1px solid var(--border) !important; }
+}
+
+/* ── EXTRAS ──────────────────────────────────────────────── */
+.extras-list { display: flex; flex-direction: column; gap: 0; }
+.extra-item {
+  display: flex; gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.extra-item:first-child { padding-top: 0; }
+.extra-item:last-child { border-bottom: none; }
+.extra-index {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text3);
+  flex-shrink: 0;
+  width: 24px;
+  padding-top: 3px;
+}
+.extra-content { flex: 1; }
+.extra-header { margin-bottom: 8px; }
+.extra-title { font-family: var(--font-head); font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.extra-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.extra-org { font-size: 13px; color: var(--accent); font-weight: 500; }
+.extra-date { font-size: 12px; color: var(--text3); font-family: var(--font-mono); }
+.extra-desc { font-size: 14px; color: var(--text2); line-height: 1.7; text-wrap: pretty; }
+
+/* ── CONTACT ─────────────────────────────────────────────── */
+.contact-layout { display: grid; grid-template-columns: 1fr 340px; gap: 40px; align-items: start; }
+.contact-intro { font-size: 15px; line-height: 1.75; color: var(--text2); margin-bottom: 28px; text-wrap: pretty; }
+.contact-links { display: flex; flex-direction: column; gap: 10px; }
+.contact-link-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  transition: all 0.15s;
+  box-shadow: var(--shadow);
+}
+.contact-link-card:hover { border-color: var(--accent); transform: translateX(3px); }
+.contact-link-card.no-link { cursor: default; }
+.contact-link-card.no-link:hover { transform: none; border-color: var(--border); }
+.clc-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-mono); color: var(--text3); margin-bottom: 2px; }
+.clc-value { font-size: 14px; color: var(--text2); }
+
+.contact-available-card {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 20px;
+  background: color-mix(in srgb, #22c55e 8%, var(--surface));
+  border: 1px solid rgba(34,197,94,0.2);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+.avail-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+  animation: pulse-dot 2s infinite;
+  flex-shrink: 0; margin-top: 4px;
+}
+.avail-text strong { font-family: var(--font-head); font-size: 15px; font-weight: 600; color: var(--text); display: block; margin-bottom: 3px; }
+.avail-text p { font-size: 13px; color: var(--text2); }
+
+.contact-skills-highlight {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.csh-label { font-size: 11.5px; font-family: var(--font-mono); color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+.csh-item { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text2); padding: 6px 0; border-bottom: 1px solid var(--border); }
+.csh-item:last-child { border-bottom: none; }
+.csh-arrow { color: var(--accent); font-weight: 600; }
+
+.footer-note {
+  text-align: center;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text3);
+  padding: 32px 0 0;
+  margin-top: 56px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── TERMINAL ────────────────────────────────────────────── */
+.terminal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 999;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 20px;
+  animation: fade-in 0.15s ease;
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.terminal-window {
+  width: 100%; max-width: 760px;
+  max-height: 480px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  overflow: hidden;
+  animation: slide-up 0.2s ease;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+  display: flex; flex-direction: column;
+}
+@keyframes slide-up { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.terminal-titlebar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px;
+  background: #161b22;
+  border-bottom: 1px solid #21262d;
+}
+.terminal-dots { display: flex; gap: 6px; }
+.tdot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; }
+.tdot-red { background: #ff5f56; }
+.tdot-yellow { background: #ffbd2e; }
+.tdot-green { background: #27c93f; }
+.terminal-title { font-family: var(--font-mono); font-size: 12px; color: #8b949e; }
+.terminal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 14px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #e6edf3;
+  cursor: text;
+}
+.t-input-line { display: flex; align-items: center; gap: 8px; margin: 3px 0; flex-wrap: wrap; }
+.t-prompt { color: #58a6ff; flex-shrink: 0; }
+.t-cmd { color: #e6edf3; }
+.t-output { margin: 2px 0 6px; }
+.t-line { color: #8b949e; white-space: pre; }
+.t-input {
+  background: none; border: none; outline: none;
+  color: #e6edf3;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  caret-color: #58a6ff;
+  flex: 1;
+  min-width: 60px;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .skills-layout { grid-template-columns: 1fr; }
+  .featured-inner { grid-template-columns: 1fr; }
+  .featured-right { border-top: 1px solid var(--border); border-right: none; }
+  .contact-layout { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  :root { --sidebar-w: 0px; }
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    width: 240px;
+  }
+  .sidebar.mobile-open { transform: translateX(0); }
+  .sidebar-overlay { display: block; }
+  .mobile-menu-btn { display: flex; }
+  .main-content { margin-left: 0; }
+  .section { padding: 60px 24px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 28px; }
+  .hero-photo-col { flex-direction: row; align-items: center; gap: 20px; }
+  .hero-photo-frame { width: 100px; height: 100px; flex-shrink: 0; }
+  .hero-name { font-size: 32px; }
+}
+</style>
+</head>
+<script>
+// Portfolio data — all content in one place
+window.PORTFOLIO = {
+  name: "Prashanth Mudigonda",
+  taglines: [
+    "Cybersecurity Analyst — SOC / SIEM / Detection Engineering",
+    "Network Security & Traffic Analysis",
+    "Ethical Hacker — C|EH v12 Training",
+    "Digital Forensics & Incident Response",
+    "Penetration Tester",
+    "Malware Analyst"
+  ],
+  about: "MS Cybersecurity graduate from Auburn University (3.79 GPA) and security engineer behind WireSeal v1.0.0 — a security-audited, zero-trust VPN gateway (295 commits, 59 releases). 1,000+ hours deep in Kali Linux, Metasploit, Wireshark, Splunk/Elastic, MITRE ATT&CK-mapped detection engineering, and live attack simulations. I don't just study threats; I've hunted them through real traffic, reverse-engineered binaries, and built production-grade cryptographic tooling (dual-layer AEAD vault, Argon2id KDF, hash-chained audit log, TOTP 2FA, RBAC) from first principles. From kernel hardening to source-level security audits, I bring systems-level depth that turns day-one ramp-up into immediate impact for SOC, blue-team, and incident-response teams.",
+  location: "Alpharetta, GA, USA",
+  github: "https://github.com/prashanth-7861",
+  linkedin: "https://www.linkedin.com/in/mudigondaprashanth",
+  photo: "uploads/photo-1777317961221.png",
+
+  radarSkills: [
+    { name: "Linux / OS", value: 92 },
+    { name: "Network Security", value: 88 },
+    { name: "Pen Testing", value: 82 },
+    { name: "Python", value: 85 },
+    { name: "Digital Forensics", value: 78 },
+    { name: "Cryptography", value: 80 },
+    { name: "Malware Analysis", value: 76 },
+    { name: "SOC / SIEM", value: 72 }
+  ],
+
+  skillCategories: [
+    { label: "Languages", items: ["Python", "Bash", "Java", "C++", "HTML", "CSS", "PHP"] },
+    { label: "Security Tools", items: ["Nmap", "Wireshark", "Metasploit", "Burp Suite", "Nessus", "sqlmap", "Aircrack-ng", "Hydra", "Medusa", "BeEF", "SET"] },
+    { label: "Forensics", items: ["Autopsy", "Photorec", "tsk_recover", "foremost", "OWASP Juice Shop"] },
+    { label: "Operating Systems", items: ["Kali Linux", "Parrot OS", "Ubuntu", "Arch + Hyprland", "Debian", "Windows"] },
+    { label: "Python Libraries", items: ["NumPy", "Pandas", "Scikit-learn", "Flask", "Django", "PyQt5", "Matplotlib", "SciPy", "Seaborn"] },
+    { label: "Databases & Infra", items: ["MySQL", "ER Modeling", "WampServer", "VirtualBox"] }
+  ],
+
+  projects: [
+    {
+      id: "wireseal",
+      name: "WireSeal",
+      featured: true,
+      category: ["Security Tools", "Automation"],
+      tagline: "Security-audited zero-trust WireGuard gateway — v1.0.0",
+      description: "Security-audited (v1.0.0) zero-trust VPN gateway with full SSDLC artifacts: published threat model, source-level security audit, and disclosed vulnerability remediation. Dual-layer AEAD vault, Argon2id KDF, TOTP 2FA, 15+ privilege RBAC, and a hash-chained tamper-evident audit log. Zero plaintext secrets on disk across Linux, macOS, Windows, and Raspberry Pi.",
+      highlights: [
+        "Security-audited v1.0.0 — published threat model + audit report + remediation log",
+        "Dual-layer AEAD vault: ChaCha20-Poly1305 + AES-256-GCM-SIV, Argon2id KDF (256 MiB)",
+        "RFC 6238 TOTP 2FA, PBKDF2 backup codes, LUKS-style multi-admin keyslots",
+        "15+ privilege RBAC, TTL-based client expiry with auto-revoke",
+        "SHA-256 hash-chained audit log, localhost-only API, rate-limited",
+        "Server hardening: rp_filter, fail2ban, nftables, mlock, RLIMIT_CORE=0"
+      ],
+      tech: ["Python", "WireGuard", "AES-256-GCM-SIV", "ChaCha20-Poly1305", "Argon2id", "TOTP", "nftables", "TypeScript"],
+      github: "https://github.com/prashanth-7861/WireSeal",
+      live: "https://wireseal.vercel.app",
+      stats: { commits: 295, releases: 59, version: "v1.0.0", lang: "Python 60.9% · TypeScript 32.7% · Shell 3.5%" }
+    },
+    {
+      id: "file-sig",
+      name: "File Signature Analyzer",
+      featured: false,
+      showcase: true,
+      category: ["Security Tools"],
+      tagline: "Binary-level file type identification tool",
+      description: "Python tool for identifying file types from binary signatures regardless of extension. Handles ambiguous multi-format signatures (ZIP/EPUB/DOCX overlap), creates disambiguation copies, and generates detailed analysis reports.",
+      highlights: [
+        "Deep binary content inspection beyond file extensions",
+        "Handles shared-signature formats (ZIP, EPUB, DOCX, etc.)",
+        "Automated detailed analysis report generation"
+      ],
+      tech: ["Python", "Binary Analysis", "File Forensics"],
+      github: "https://github.com/prashanth-7861/file-signature-analyzer"
+    },
+    {
+      id: "log-analyzer",
+      name: "Log Analyzer & Alert Triage",
+      featured: false,
+      showcase: true,
+      category: ["Security Tools", "SOC"],
+      tagline: "Python SOC tool for parsing, detecting & triaging security events",
+      description: "Production-grade log analysis engine that parses Windows .evtx and Linux auth.log files, runs behavioral detection rules mapped to MITRE ATT&CK tactics, correlates alerts by source IP and user within configurable time windows, and outputs interactive HTML triage reports — purpose-built for SOC analyst workflows.",
+      highlights: [
+        "MITRE ATT&CK mapped: Credential Access, Privilege Escalation, Lateral Movement, Persistence",
+        "Binary .evtx parser + regex syslog engine — no external system tools required",
+        "Alert deduplication & correlation by IP/user within dynamic time windows",
+        "Detects: brute force, off-hours logins, new users, account lockout, lateral movement",
+        "Outputs: interactive HTML visual cards, structured JSON, and CSV reports"
+      ],
+      tech: ["Python", "MITRE ATT&CK", "EVTX Parsing", "YAML Config", "HTML Reports", "SOC"],
+      github: "https://github.com/prashanth-7861/log-analyzer-alert-triage",
+      termLines: [
+        { type: 'cmd', text: 'python main.py --input samples/sample.evtx --type evtx --output both' },
+        { type: 'comment', text: '  # parsing Windows Event Log (binary .evtx)...' },
+        { type: 'out', text: '  [4625] failed login: user=admin  src=192.168.1.45' },
+        { type: 'out', text: '  [4625] failed login: user=admin  src=192.168.1.45  (×12 in 60s)' },
+        { type: 'alert', text: '  ⚠ ALERT: Brute Force  [TA0006 - Credential Access]' },
+        { type: 'out', text: '  [4624] successful login: user=admin  src=192.168.1.45' },
+        { type: 'alert', text: '  ⚠ ALERT: Successful Login After Failures  [TA0008]' },
+        { type: 'out', text: '  [4672] special privileges: user=admin' },
+        { type: 'alert', text: '  ⚠ ALERT: Privilege Escalation Detected  [TA0004]' },
+        { type: 'success', text: '  ✓ 3 alerts correlated  →  alerts_report.html' },
+        { type: 'success', text: '  ✓ alerts_report.json + alerts_report.csv saved' },
+      ]
+    },
+    {
+      id: "enotes",
+      name: "E-Notes",
+      featured: false,
+      showcase: false,
+      category: ["Cryptography", "Security Tools"],
+      tagline: "Zero-knowledge encrypted note-taking app — cross-platform Flutter",
+      description: "Offline-first, zero-knowledge note app with a full cryptographic stack: AES-256-GCM per-note encryption, PBKDF2 (600k iterations) key derivation, HKDF sub-key hierarchy, biometric unlock, SQLCipher at-rest encryption, and 291 passing tests. Notes are encrypted before storage — the server never sees plaintext.",
+      highlights: [
+        "Zero-knowledge: AES-256-GCM with random nonces, SQLCipher at rest (NIST SP 800-38D)",
+        "PBKDF2-HMAC-SHA256 (600k iterations) + HKDF key hierarchy (MEK → DEK)",
+        "PIN + Biometric (Face ID / Fingerprint) + 16-digit Account Key recovery",
+        "291 tests: crypto vectors, auth flows, DB integrity, round-trip encrypt/decrypt",
+        "Cross-platform: Android · iOS · macOS · Windows · Linux · Web (2 releases)"
+      ],
+      tech: ["Flutter", "Dart", "AES-256-GCM", "PBKDF2", "SQLCipher", "HKDF"],
+      github: "https://github.com/prashanth-7861/E-Notes"
+    },
+    {
+      id: "aes",
+      name: "AES Encryption Engine",
+      featured: false,
+      category: ["Cryptography"],
+      tagline: "AES block cipher built from scratch in Python",
+      description: "Custom AES pipeline implementing every transformation step — SubBytes, ShiftRows, MixColumns, AddRoundKey — without high-level crypto libraries. Includes 128-bit key scheduling, round-key derivation, and file I/O with full byte/hex/matrix state representation.",
+      highlights: [
+        "Manual SubBytes, ShiftRows, MixColumns, AddRoundKey",
+        "Custom 128-bit key schedule and round-key expansion",
+        "File-driven I/O; byte/hex/matrix state representation"
+      ],
+      tech: ["Python", "AES", "Block Ciphers", "Cryptography"]
+    },
+    {
+      id: "bash",
+      name: "Archive Utility",
+      featured: false,
+      category: ["Automation"],
+      tagline: "Bash script for compression and extraction",
+      description: "Systems-level bash utility for compressing and extracting archives — demonstrating Linux scripting skills directly applicable to SOC automation, log management, and incident response workflows.",
+      highlights: ["Multi-format archive support", "Automation-ready scripting"],
+      tech: ["Bash", "Linux", "Scripting"]
+    },
+    {
+      id: "covid-ml",
+      name: "COVID-19 ML Detector",
+      featured: false,
+      category: ["Machine Learning"],
+      tagline: "8-model clinical text classifier for COVID-19",
+      description: "Benchmarked 8 ML classifiers (LR, Naïve Bayes, SVM, Decision Tree, Bagging, AdaBoost, Random Forest, Gradient Boosting) on clinical text data. Skills directly transferable to anomaly detection, alert tuning, and log analysis in security operations.",
+      highlights: [
+        "8 ML models compared for optimal precision/recall",
+        "Feature engineering for unstructured clinical text",
+        "Methods applicable to SOC anomaly detection"
+      ],
+      tech: ["Python", "Scikit-learn", "NLP", "Pandas", "ML"]
+    },
+    {
+      id: "subway",
+      name: "Subway Flow Forecaster",
+      featured: false,
+      category: ["Machine Learning"],
+      tagline: "Time-series passenger flow prediction + dashboard",
+      description: "Forecasting system using NumPy, Pandas, and SciPy with a Django/WampServer dashboard to predict multi-station passenger flow from historical and external factors — building time-series and visualization skills applicable to network traffic baseline analysis.",
+      highlights: [
+        "Multi-station time-series forecasting",
+        "Django + WampServer visualization dashboard",
+        "External factor correlation analysis"
+      ],
+      tech: ["Python", "Django", "NumPy", "SciPy", "Pandas", "Matplotlib"]
+    }
+  ],
+
+  education: [
+    {
+      school: "Auburn University at Montgomery",
+      location: "AL, USA",
+      degree: "M.S. Computer & Information Systems Security",
+      gpa: "3.79 / 4.0",
+      years: "2023 – 2025",
+      courses: ["Malware Analysis & Digital Forensics", "Ethical Hacking & Pen Testing", "Linux", "Python", "Network Security & Reliability", "C++", "Advanced Operating Systems", "Advanced Network Systems", "Database Systems"]
+    },
+    {
+      school: "Sri Indu Institute of Engineering & Technology",
+      location: "JNTU Hyderabad, India",
+      degree: "B.Tech Computer Science Engineering",
+      gpa: "6.23 / 10",
+      years: "2018 – 2022",
+      courses: ["Design & Analysis of Algorithms", "Data Structures", "Data Mining", "Database Management Systems", "Computer Networks", "Software Engineering", "Compiler Design", "Formal Language & Automata Theory"]
+    }
+  ],
+
+  certifications: [
+    { name: "C|EH v12 — Ethical Hacker Training", org: "EC-Council Accredited Training Center", badge: "CEH", training: true },
+    { name: "Google Cybersecurity Professional Certificate", org: "Google via Coursera", badge: "GCP", inProgress: true },
+    { name: "Mastercard Cybersecurity Virtual Experience", org: "Forage · Mar 2023", badge: "MC" },
+    { name: "Diploma in Computer Application", org: "Microsoft Office Suite", badge: "MS" },
+    { name: "Ethical Hacking A–Z: Beginner to Expert", org: "Anthony Timbers — Udemy", badge: "UD" },
+    { name: "Ethical Hacking: Network Attacks", org: "Peter A — Udemy", badge: "UD" }
+  ],
+
+  extracurricular: [
+    { title: "Mastercard Cybersecurity Virtual Experience", org: "Forage", date: "Mar 2023", description: "Simulations of threat analysis, incident handling, and security decision-making in a corporate context." },
+    { title: "Cybersecurity Webinar", org: "MoxieHawk", date: "", description: "Exposure to current threat trends, attack techniques, and defensive strategies." },
+    { title: "Offensive & Defensive Techniques Workshop", org: "HackingFlix (Gautam Kumawat)", date: "", description: "Hands-on offensive techniques and defensive considerations reinforcing real-world attacker methodology." },
+    { title: "Technical Fest Organizer", org: "College", date: "", description: "Planned and organized technical events, demonstrating leadership and cross-functional collaboration." }
+  ]
+};
+
+</script>
+
+<script>
+/* tweaks-panel */
+// tweaks-panel.jsx
+// Reusable Tweaks shell + form-control helpers.
+//
+// Owns the host protocol (listens for __activate_edit_mode / __deactivate_edit_mode,
+// posts __edit_mode_available / __edit_mode_set_keys / __edit_mode_dismissed) so
+// individual prototypes don't re-roll it. Ships a consistent set of controls so you
+// don't hand-draw <input type="range">, segmented radios, steppers, etc.
+//
+// Usage (in an HTML file that loads React + Babel):
+//
+//   const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+//     "primaryColor": "#D97757",
+//     "fontSize": 16,
+//     "density": "regular",
+//     "dark": false
+//   }/*EDITMODE-END*/;
+//
+//   function App() {
+//     const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+//     return (
+//       <div style={{ fontSize: t.fontSize, color: t.primaryColor }}>
+//         Hello
+//         <TweaksPanel>
+//           <TweakSection label="Typography" />
+//           <TweakSlider label="Font size" value={t.fontSize} min={10} max={32} unit="px"
+//                        onChange={(v) => setTweak('fontSize', v)} />
+//           <TweakRadio  label="Density" value={t.density}
+//                        options={['compact', 'regular', 'comfy']}
+//                        onChange={(v) => setTweak('density', v)} />
+//           <TweakSection label="Theme" />
+//           <TweakColor  label="Primary" value={t.primaryColor}
+//                        onChange={(v) => setTweak('primaryColor', v)} />
+//           <TweakToggle label="Dark mode" value={t.dark}
+//                        onChange={(v) => setTweak('dark', v)} />
+//         </TweaksPanel>
+//       </div>
+//     );
+//   }
+//
+// ─────────────────────────────────────────────────────────────────────────────
+
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-body::-webkit-scrollbar{width:8px}
+  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
+  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
+    border:2px solid transparent;background-clip:content-box}
+  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
+    border:2px solid transparent;background-clip:content-box}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;
+    color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+
+  .twk-field{appearance:none;width:100%;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
+    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:14px;height:14px;border-radius:50%;background:#fff;
+    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
+    background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
+    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;
+    overflow-wrap:anywhere}
+
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+
+  .twk-num{display:flex;align-items:center;height:26px;padding:0 0 0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;background:rgba(255,255,255,.6)}
+  .twk-num-lbl{font-weight:500;color:rgba(41,38,27,.6);cursor:ew-resize;
+    user-select:none;padding-right:8px}
+  .twk-num input{flex:1;min-width:0;height:100%;border:0;background:transparent;
+    font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:0 8px 0 0;
+    outline:none;color:inherit;-moz-appearance:textfield}
+  .twk-num input::-webkit-inner-spin-button,.twk-num input::-webkit-outer-spin-button{
+    -webkit-appearance:none;margin:0}
+  .twk-num-unit{padding-right:8px;color:rgba(41,38,27,.45)}
+
+  .twk-btn{appearance:none;height:26px;padding:0 12px;border:0;border-radius:7px;
+    background:rgba(0,0,0,.78);color:#fff;font:inherit;font-weight:500;cursor:default}
+  .twk-btn:hover{background:rgba(0,0,0,.88)}
+  .twk-btn.secondary{background:rgba(0,0,0,.06);color:inherit}
+  .twk-btn.secondary:hover{background:rgba(0,0,0,.1)}
+
+  .twk-swatch{appearance:none;-webkit-appearance:none;width:56px;height:22px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:6px;padding:0;cursor:default;
+    background:transparent;flex-shrink:0}
+  .twk-swatch::-webkit-color-swatch-wrapper{padding:0}
+  .twk-swatch::-webkit-color-swatch{border:0;border-radius:5.5px}
+  .twk-swatch::-moz-color-swatch{border:0;border-radius:5.5px}
+`;
+
+// ── useTweaks ───────────────────────────────────────────────────────────────
+// Single source of truth for tweak values. setTweak persists via the host
+// (__edit_mode_set_keys → host rewrites the EDITMODE block on disk).
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  // Accepts either setTweak('key', value) or setTweak({ key: value, ... }) so a
+  // useState-style call doesn't write a "[object Object]" key into the persisted
+  // JSON block.
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null ? keyOrEdits : {
+      [keyOrEdits]: val
+    };
+    setValues(prev => ({
+      ...prev,
+      ...edits
+    }));
+    window.parent.postMessage({
+      type: '__edit_mode_set_keys',
+      edits
+    }, '*');
+  }, []);
+  return [values, setTweak];
+}
+
+// ── TweaksPanel ─────────────────────────────────────────────────────────────
+// Floating shell. Registers the protocol listener BEFORE announcing
+// availability — if the announce ran first, the host's activate could land
+// before our handler exists and the toolbar toggle would silently no-op.
+// The close button posts __edit_mode_dismissed so the host's toolbar toggle
+// flips off in lockstep; the host echoes __deactivate_edit_mode back which
+// is what actually hides the panel.
+function TweaksPanel({
+  title = 'Tweaks',
+  children
+}) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  const offsetRef = React.useRef({
+    x: 16,
+    y: 16
+  });
+  const PAD = 16;
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth,
+      h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y))
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', clampToViewport);
+      return () => window.removeEventListener('resize', clampToViewport);
+    }
+    const ro = new ResizeObserver(clampToViewport);
+    ro.observe(document.documentElement);
+    return () => ro.disconnect();
+  }, [open, clampToViewport]);
+  React.useEffect(() => {
+    const onMsg = e => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({
+      type: '__edit_mode_available'
+    }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+  const dismiss = () => {
+    setOpen(false);
+    window.parent.postMessage({
+      type: '__edit_mode_dismissed'
+    }, '*');
+  };
+  const onDragStart = e => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX,
+      sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = ev => {
+      offsetRef.current = {
+        x: startRight - (ev.clientX - sx),
+        y: startBottom - (ev.clientY - sy)
+      };
+      clampToViewport();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+  if (!open) return null;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("style", null, __TWEAKS_STYLE), /*#__PURE__*/React.createElement("div", {
+    ref: dragRef,
+    className: "twk-panel",
+    style: {
+      right: offsetRef.current.x,
+      bottom: offsetRef.current.y
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "twk-hd",
+    onMouseDown: onDragStart
+  }, /*#__PURE__*/React.createElement("b", null, title), /*#__PURE__*/React.createElement("button", {
+    className: "twk-x",
+    "aria-label": "Close tweaks",
+    onMouseDown: e => e.stopPropagation(),
+    onClick: dismiss
+  }, "\u2715")), /*#__PURE__*/React.createElement("div", {
+    className: "twk-body"
+  }, children)));
+}
+
+// ── Layout helpers ──────────────────────────────────────────────────────────
+
+function TweakSection({
+  label,
+  children
+}) {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "twk-sect"
+  }, label), children);
+}
+function TweakRow({
+  label,
+  value,
+  children,
+  inline = false
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: inline ? 'twk-row twk-row-h' : 'twk-row'
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "twk-lbl"
+  }, /*#__PURE__*/React.createElement("span", null, label), value != null && /*#__PURE__*/React.createElement("span", {
+    className: "twk-val"
+  }, value)), children);
+}
+
+// ── Controls ────────────────────────────────────────────────────────────────
+
+function TweakSlider({
+  label,
+  value,
+  min = 0,
+  max = 100,
+  step = 1,
+  unit = '',
+  onChange
+}) {
+  return /*#__PURE__*/React.createElement(TweakRow, {
+    label: label,
+    value: `${value}${unit}`
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "range",
+    className: "twk-slider",
+    min: min,
+    max: max,
+    step: step,
+    value: value,
+    onChange: e => onChange(Number(e.target.value))
+  }));
+}
+function TweakToggle({
+  label,
+  value,
+  onChange
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "twk-row twk-row-h"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "twk-lbl"
+  }, /*#__PURE__*/React.createElement("span", null, label)), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "twk-toggle",
+    "data-on": value ? '1' : '0',
+    role: "switch",
+    "aria-checked": !!value,
+    onClick: () => onChange(!value)
+  }, /*#__PURE__*/React.createElement("i", null)));
+}
+function TweakRadio({
+  label,
+  value,
+  options,
+  onChange
+}) {
+  const trackRef = React.useRef(null);
+  const [dragging, setDragging] = React.useState(false);
+  const opts = options.map(o => typeof o === 'object' ? o : {
+    value: o,
+    label: o
+  });
+  const idx = Math.max(0, opts.findIndex(o => o.value === value));
+  const n = opts.length;
+
+  // The active value is read by pointer-move handlers attached for the lifetime
+  // of a drag — ref it so a stale closure doesn't fire onChange for every move.
+  const valueRef = React.useRef(value);
+  valueRef.current = value;
+  const segAt = clientX => {
+    const r = trackRef.current.getBoundingClientRect();
+    const inner = r.width - 4;
+    const i = Math.floor((clientX - r.left - 2) / inner * n);
+    return opts[Math.max(0, Math.min(n - 1, i))].value;
+  };
+  const onPointerDown = e => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = ev => {
+      if (!trackRef.current) return;
+      const v = segAt(ev.clientX);
+      if (v !== valueRef.current) onChange(v);
+    };
+    const up = () => {
+      setDragging(false);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return /*#__PURE__*/React.createElement(TweakRow, {
+    label: label
+  }, /*#__PURE__*/React.createElement("div", {
+    ref: trackRef,
+    role: "radiogroup",
+    onPointerDown: onPointerDown,
+    className: dragging ? 'twk-seg dragging' : 'twk-seg'
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "twk-seg-thumb",
+    style: {
+      left: `calc(2px + ${idx} * (100% - 4px) / ${n})`,
+      width: `calc((100% - 4px) / ${n})`
+    }
+  }), opts.map(o => /*#__PURE__*/React.createElement("button", {
+    key: o.value,
+    type: "button",
+    role: "radio",
+    "aria-checked": o.value === value
+  }, o.label))));
+}
+function TweakSelect({
+  label,
+  value,
+  options,
+  onChange
+}) {
+  return /*#__PURE__*/React.createElement(TweakRow, {
+    label: label
+  }, /*#__PURE__*/React.createElement("select", {
+    className: "twk-field",
+    value: value,
+    onChange: e => onChange(e.target.value)
+  }, options.map(o => {
+    const v = typeof o === 'object' ? o.value : o;
+    const l = typeof o === 'object' ? o.label : o;
+    return /*#__PURE__*/React.createElement("option", {
+      key: v,
+      value: v
+    }, l);
+  })));
+}
+function TweakText({
+  label,
+  value,
+  placeholder,
+  onChange
+}) {
+  return /*#__PURE__*/React.createElement(TweakRow, {
+    label: label
+  }, /*#__PURE__*/React.createElement("input", {
+    className: "twk-field",
+    type: "text",
+    value: value,
+    placeholder: placeholder,
+    onChange: e => onChange(e.target.value)
+  }));
+}
+function TweakNumber({
+  label,
+  value,
+  min,
+  max,
+  step = 1,
+  unit = '',
+  onChange
+}) {
+  const clamp = n => {
+    if (min != null && n < min) return min;
+    if (max != null && n > max) return max;
+    return n;
+  };
+  const startRef = React.useRef({
+    x: 0,
+    val: 0
+  });
+  const onScrubStart = e => {
+    e.preventDefault();
+    startRef.current = {
+      x: e.clientX,
+      val: value
+    };
+    const decimals = (String(step).split('.')[1] || '').length;
+    const move = ev => {
+      const dx = ev.clientX - startRef.current.x;
+      const raw = startRef.current.val + dx * step;
+      const snapped = Math.round(raw / step) * step;
+      onChange(clamp(Number(snapped.toFixed(decimals))));
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "twk-num"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "twk-num-lbl",
+    onPointerDown: onScrubStart
+  }, label), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    value: value,
+    min: min,
+    max: max,
+    step: step,
+    onChange: e => onChange(clamp(Number(e.target.value)))
+  }), unit && /*#__PURE__*/React.createElement("span", {
+    className: "twk-num-unit"
+  }, unit));
+}
+function TweakColor({
+  label,
+  value,
+  onChange
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "twk-row twk-row-h"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "twk-lbl"
+  }, /*#__PURE__*/React.createElement("span", null, label)), /*#__PURE__*/React.createElement("input", {
+    type: "color",
+    className: "twk-swatch",
+    value: value,
+    onChange: e => onChange(e.target.value)
+  }));
+}
+function TweakButton({
+  label,
+  onClick,
+  secondary = false
+}) {
+  return /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: secondary ? 'twk-btn secondary' : 'twk-btn',
+    onClick: onClick
+  }, label);
+}
+Object.assign(window, {
+  useTweaks,
+  TweaksPanel,
+  TweakSection,
+  TweakRow,
+  TweakSlider,
+  TweakToggle,
+  TweakRadio,
+  TweakSelect,
+  TweakText,
+  TweakNumber,
+  TweakColor,
+  TweakButton
+});
+</script>
+
+<script>
+/* portfolio-sidebar */
+const {
+  useState
+} = React;
+const NAV_ITEMS = [{
+  id: 'hero',
+  label: 'About',
+  icon: '◈'
+}, {
+  id: 'skills',
+  label: 'Skills',
+  icon: '◉'
+}, {
+  id: 'projects',
+  label: 'Projects',
+  icon: '◧'
+}, {
+  id: 'education',
+  label: 'Education',
+  icon: '◎'
+}, {
+  id: 'certs',
+  label: 'Certifications',
+  icon: '◆'
+}, {
+  id: 'extras',
+  label: 'Experience',
+  icon: '◐'
+}, {
+  id: 'contact',
+  label: 'Contact',
+  icon: '◑'
+}];
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - 24;
+  window.scrollTo({
+    top,
+    behavior: 'smooth'
+  });
+}
+function GitHubSVG() {
+  return /*#__PURE__*/React.createElement("svg", {
+    width: "16",
+    height: "16",
+    viewBox: "0 0 24 24",
+    fill: "currentColor"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+  }));
+}
+function LinkedInSVG() {
+  return /*#__PURE__*/React.createElement("svg", {
+    width: "16",
+    height: "16",
+    viewBox: "0 0 24 24",
+    fill: "currentColor"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+  }));
+}
+function TermSVG() {
+  return /*#__PURE__*/React.createElement("svg", {
+    width: "15",
+    height: "15",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  }, /*#__PURE__*/React.createElement("polyline", {
+    points: "4 17 10 11 4 5"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "12",
+    y1: "19",
+    x2: "20",
+    y2: "19"
+  }));
+}
+function MoonSVG() {
+  return /*#__PURE__*/React.createElement("svg", {
+    width: "14",
+    height: "14",
+    viewBox: "0 0 24 24",
+    fill: "currentColor"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+  }));
+}
+function SunSVG() {
+  return /*#__PURE__*/React.createElement("svg", {
+    width: "15",
+    height: "15",
+    viewBox: "0 0 24 24",
+    fill: "currentColor"
+  }, /*#__PURE__*/React.createElement("circle", {
+    cx: "12",
+    cy: "12",
+    r: "5"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "12",
+    y1: "1",
+    x2: "12",
+    y2: "3",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "12",
+    y1: "21",
+    x2: "12",
+    y2: "23",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "4.22",
+    y1: "4.22",
+    x2: "5.64",
+    y2: "5.64",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "18.36",
+    y1: "18.36",
+    x2: "19.78",
+    y2: "19.78",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "1",
+    y1: "12",
+    x2: "3",
+    y2: "12",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "21",
+    y1: "12",
+    x2: "23",
+    y2: "12",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "4.22",
+    y1: "19.78",
+    x2: "5.64",
+    y2: "18.36",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "18.36",
+    y1: "5.64",
+    x2: "19.78",
+    y2: "4.22",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }));
+}
+function Sidebar({
+  dark,
+  setDark,
+  activeSection,
+  onTerminal
+}) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const handleNav = id => {
+    scrollToSection(id);
+    setMobileOpen(false);
+  };
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    className: "mobile-menu-btn",
+    onClick: () => setMobileOpen(!mobileOpen),
+    "aria-label": "Toggle menu"
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null)), /*#__PURE__*/React.createElement("aside", {
+    className: `sidebar ${mobileOpen ? 'mobile-open' : ''}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-logo"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-avatar"
+  }, "PM"), /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-identity"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "sidebar-fname"
+  }, "Prashanth"), /*#__PURE__*/React.createElement("span", {
+    className: "sidebar-lname"
+  }, "Mudigonda"))), /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-divider"
+  }), /*#__PURE__*/React.createElement("nav", {
+    className: "sidebar-nav"
+  }, NAV_ITEMS.map(item => /*#__PURE__*/React.createElement("button", {
+    key: item.id,
+    className: `nav-btn ${activeSection === item.id ? 'active' : ''}`,
+    onClick: () => handleNav(item.id)
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "nav-icon"
+  }, item.icon), /*#__PURE__*/React.createElement("span", {
+    className: "nav-label"
+  }, item.label), /*#__PURE__*/React.createElement("span", {
+    className: "nav-pip"
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-spacer"
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "terminal-btn",
+    onClick: onTerminal,
+    title: "Open Terminal  Ctrl+`"
+  }, /*#__PURE__*/React.createElement(TermSVG, null), /*#__PURE__*/React.createElement("span", null, "Terminal"), /*#__PURE__*/React.createElement("span", {
+    className: "term-hint"
+  }, "Ctrl+`")), /*#__PURE__*/React.createElement("a", {
+    href: "resume.html",
+    target: "_blank",
+    rel: "noopener",
+    className: "resume-btn"
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "13",
+    height: "13",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2.5",
+    strokeLinecap: "round"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+  }), /*#__PURE__*/React.createElement("polyline", {
+    points: "14 2 14 8 20 8"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "16",
+    y1: "13",
+    x2: "8",
+    y2: "13"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "16",
+    y1: "17",
+    x2: "8",
+    y2: "17"
+  }), /*#__PURE__*/React.createElement("polyline", {
+    points: "10 9 9 9 8 9"
+  })), /*#__PURE__*/React.createElement("span", null, "View Resume")), /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-divider"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-socials"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://github.com/prashanth-7861",
+    target: "_blank",
+    rel: "noopener",
+    className: "social-link"
+  }, /*#__PURE__*/React.createElement(GitHubSVG, null), " GitHub"), /*#__PURE__*/React.createElement("a", {
+    href: "https://www.linkedin.com/in/mudigondaprashanth",
+    target: "_blank",
+    rel: "noopener",
+    className: "social-link"
+  }, /*#__PURE__*/React.createElement(LinkedInSVG, null), " LinkedIn")), /*#__PURE__*/React.createElement("button", {
+    className: "theme-toggle",
+    onClick: () => setDark(!dark)
+  }, dark ? /*#__PURE__*/React.createElement(SunSVG, null) : /*#__PURE__*/React.createElement(MoonSVG, null), /*#__PURE__*/React.createElement("span", null, dark ? 'Light Mode' : 'Dark Mode'))), mobileOpen && /*#__PURE__*/React.createElement("div", {
+    className: "sidebar-overlay",
+    onClick: () => setMobileOpen(false)
+  }));
+}
+Object.assign(window, {
+  Sidebar
+});
+</script>
+
+<script>
+/* portfolio-hero */
+const {
+  useState,
+  useEffect,
+  useRef
+} = React;
+function useTyping(strings, speed = 75, deleteSpeed = 45, pause = 1800) {
+  const [text, setText] = useState('');
+  const [idx, setIdx] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+  const [waiting, setWaiting] = useState(false);
+  useEffect(() => {
+    if (waiting) return;
+    const current = strings[idx];
+    const timer = setTimeout(() => {
+      if (!deleting) {
+        const next = current.slice(0, text.length + 1);
+        setText(next);
+        if (next === current) {
+          setWaiting(true);
+          setTimeout(() => {
+            setDeleting(true);
+            setWaiting(false);
+          }, pause);
+        }
+      } else {
+        const next = current.slice(0, text.length - 1);
+        setText(next);
+        if (next === '') {
+          setDeleting(false);
+          setIdx((idx + 1) % strings.length);
+        }
+      }
+    }, deleting ? deleteSpeed : speed);
+    return () => clearTimeout(timer);
+  }, [text, deleting, idx, waiting]);
+  return text;
+}
+function HeroSection({
+  dark
+}) {
+  const d = window.PORTFOLIO;
+  const typed = useTyping(d.taglines);
+  const heroRef = useRef(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) heroRef.current && heroRef.current.classList.add('visible');
+    }, {
+      threshold: 0.1
+    });
+    if (heroRef.current) observer.observe(heroRef.current);
+    return () => observer.disconnect();
+  }, []);
+  return /*#__PURE__*/React.createElement("section", {
+    id: "hero",
+    className: "section hero-section",
+    ref: heroRef
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hero-inner fade-up"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hero-photo-col"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hero-photo-frame"
+  }, /*#__PURE__*/React.createElement("img", {
+    src: d.photo,
+    alt: "Prashanth Mudigonda",
+    className: "hero-photo"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "hero-photo-ring"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "hero-status"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "status-dot"
+  }), "Open to opportunities")), /*#__PURE__*/React.createElement("div", {
+    className: "hero-text-col"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hero-eyebrow"
+  }, "Cybersecurity Professional"), /*#__PURE__*/React.createElement("h1", {
+    className: "hero-name"
+  }, "Prashanth", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("span", {
+    className: "hero-last"
+  }, "Mudigonda")), /*#__PURE__*/React.createElement("div", {
+    className: "hero-typed-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "typed-text"
+  }, typed), /*#__PURE__*/React.createElement("span", {
+    className: "typed-cursor"
+  }, "|")), /*#__PURE__*/React.createElement("p", {
+    className: "hero-about"
+  }, d.about), /*#__PURE__*/React.createElement("div", {
+    className: "hero-meta"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "hero-meta-item"
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "13",
+    height: "13",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2.5"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "12",
+    cy: "10",
+    r: "3"
+  })), d.location), /*#__PURE__*/React.createElement("span", {
+    className: "hero-meta-item"
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "13",
+    height: "13",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2.5"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M22 10v6M2 10l10-5 10 5-10 5z"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M6 12v5c3 3 9 3 12 0v-5"
+  })), "Auburn University \xB7 3.79 GPA"), /*#__PURE__*/React.createElement("span", {
+    className: "hero-meta-item"
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "13",
+    height: "13",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2.5"
+  }, /*#__PURE__*/React.createElement("rect", {
+    x: "2",
+    y: "3",
+    width: "20",
+    height: "14",
+    rx: "2"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M8 21h8M12 17v4"
+  })), "1,000+ Lab Hours")), /*#__PURE__*/React.createElement("div", {
+    className: "hero-ctas"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://github.com/prashanth-7861",
+    target: "_blank",
+    rel: "noopener",
+    className: "cta-primary"
+  }, "View GitHub"), /*#__PURE__*/React.createElement("a", {
+    href: "resume.html",
+    target: "_blank",
+    rel: "noopener",
+    className: "cta-primary",
+    style: {
+      background: 'var(--text)',
+      boxShadow: 'none'
+    }
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "13",
+    height: "13",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2.5",
+    strokeLinecap: "round"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+  }), /*#__PURE__*/React.createElement("polyline", {
+    points: "14 2 14 8 20 8"
+  })), "\xA0Resume"), /*#__PURE__*/React.createElement("a", {
+    href: "https://www.linkedin.com/in/mudigondaprashanth",
+    target: "_blank",
+    rel: "noopener",
+    className: "cta-secondary"
+  }, "LinkedIn Profile"), /*#__PURE__*/React.createElement("button", {
+    className: "cta-secondary",
+    onClick: () => {
+      const el = document.getElementById('contact');
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY - 24;
+        window.scrollTo({
+          top,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, "Contact Me")))), /*#__PURE__*/React.createElement("div", {
+    className: "hero-badges"
+  }, ['C|EH v12', 'MITRE ATT&CK', 'Splunk / SIEM', 'WireGuard', 'Argon2id', 'Metasploit', 'Autopsy'].map(b => /*#__PURE__*/React.createElement("span", {
+    key: b,
+    className: "hero-badge"
+  }, b))));
+}
+Object.assign(window, {
+  HeroSection
+});
+</script>
+
+<script>
+/* portfolio-skills */
+const {
+  useEffect,
+  useRef,
+  useState
+} = React;
+function RadarChart({
+  skills,
+  dark,
+  animate
+}) {
+  const cx = 220,
+    cy = 220,
+    r = 130;
+  const n = skills.length;
+  const step = 2 * Math.PI / n;
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    if (!animate) return;
+    let start = null;
+    const dur = 1200;
+    const raf = ts => {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / dur, 1);
+      setProgress(easeOutCubic(p));
+      if (p < 1) requestAnimationFrame(raf);
+    };
+    requestAnimationFrame(raf);
+  }, [animate]);
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+  function angleOf(i) {
+    return i * step - Math.PI / 2;
+  }
+  function gridPts(ratio) {
+    return skills.map((_, i) => {
+      const a = angleOf(i);
+      return [cx + r * ratio * Math.cos(a), cy + r * ratio * Math.sin(a)];
+    }).map(p => p.join(',')).join(' ');
+  }
+  function skillPts() {
+    return skills.map((s, i) => {
+      const a = angleOf(i);
+      const ratio = s.value / 100 * progress;
+      return [cx + r * ratio * Math.cos(a), cy + r * ratio * Math.sin(a)];
+    }).map(p => p.join(',')).join(' ');
+  }
+  const accent = dark ? '#fbbf24' : '#d97706';
+  const gridColor = dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)';
+  const axisColor = dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.10)';
+  const textColor = dark ? '#94a3b8' : '#64748b';
+  return /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 440 440",
+    className: "radar-svg"
+  }, /*#__PURE__*/React.createElement("defs", null, /*#__PURE__*/React.createElement("radialGradient", {
+    id: "radarFill",
+    cx: "50%",
+    cy: "50%",
+    r: "50%"
+  }, /*#__PURE__*/React.createElement("stop", {
+    offset: "0%",
+    stopColor: accent,
+    stopOpacity: "0.35"
+  }), /*#__PURE__*/React.createElement("stop", {
+    offset: "100%",
+    stopColor: accent,
+    stopOpacity: "0.08"
+  }))), [0.25, 0.5, 0.75, 1].map(ratio => /*#__PURE__*/React.createElement("polygon", {
+    key: ratio,
+    points: gridPts(ratio),
+    fill: "none",
+    stroke: gridColor,
+    strokeWidth: ratio === 1 ? 1.5 : 1
+  })), skills.map((_, i) => {
+    const a = angleOf(i);
+    return /*#__PURE__*/React.createElement("line", {
+      key: i,
+      x1: cx,
+      y1: cy,
+      x2: cx + r * Math.cos(a),
+      y2: cy + r * Math.sin(a),
+      stroke: axisColor,
+      strokeWidth: "1"
+    });
+  }), /*#__PURE__*/React.createElement("polygon", {
+    points: skillPts(),
+    fill: "url(#radarFill)",
+    stroke: accent,
+    strokeWidth: "2",
+    strokeLinejoin: "round"
+  }), skills.map((s, i) => {
+    const a = angleOf(i);
+    const ratio = s.value / 100 * progress;
+    return /*#__PURE__*/React.createElement("circle", {
+      key: i,
+      cx: cx + r * ratio * Math.cos(a),
+      cy: cy + r * ratio * Math.sin(a),
+      r: "4",
+      fill: accent
+    });
+  }), skills.map((s, i) => {
+    const a = angleOf(i);
+    const labelR = r + 36;
+    const lx = cx + labelR * Math.cos(a);
+    const ly = cy + labelR * Math.sin(a);
+    const cosA = Math.cos(a);
+    const sinA = Math.sin(a);
+    const anchor = Math.abs(cosA) < 0.15 ? 'middle' : cosA > 0 ? 'start' : 'end';
+    // Split long labels onto two lines
+    const words = s.name.split(' ');
+    const needsSplit = words.length > 1 && s.name.length > 10;
+    const mid = Math.ceil(words.length / 2);
+    const line1 = words.slice(0, mid).join(' ');
+    const line2 = words.slice(mid).join(' ');
+    const yOff = needsSplit ? -7 : 4;
+    return needsSplit ? /*#__PURE__*/React.createElement("text", {
+      key: i,
+      textAnchor: anchor,
+      fontSize: "11.5",
+      fontFamily: "'Space Grotesk', sans-serif",
+      fontWeight: "500",
+      fill: textColor
+    }, /*#__PURE__*/React.createElement("tspan", {
+      x: lx,
+      y: ly + yOff
+    }, line1), /*#__PURE__*/React.createElement("tspan", {
+      x: lx,
+      dy: "14"
+    }, line2)) : /*#__PURE__*/React.createElement("text", {
+      key: i,
+      x: lx,
+      y: ly + 4,
+      textAnchor: anchor,
+      fontSize: "11.5",
+      fontFamily: "'Space Grotesk', sans-serif",
+      fontWeight: "500",
+      fill: textColor
+    }, s.name);
+  }), [25, 50, 75, 100].map(v => /*#__PURE__*/React.createElement("text", {
+    key: v,
+    x: cx + 4,
+    y: cy - r * v / 100 + 3,
+    fontSize: "8.5",
+    fontFamily: "'JetBrains Mono', monospace",
+    fill: dark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.22)',
+    textAnchor: "start"
+  }, v, "%")));
+}
+function SkillsSection({
+  dark
+}) {
+  const d = window.PORTFOLIO;
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        setVisible(true);
+        obs.disconnect();
+      }
+    }, {
+      threshold: 0.2
+    });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return /*#__PURE__*/React.createElement("section", {
+    id: "skills",
+    className: "section skills-section",
+    ref: ref
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `section-inner fade-up ${visible ? 'visible' : ''}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-header"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "section-tag"
+  }, "Competencies"), /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "Skills & Expertise")), /*#__PURE__*/React.createElement("div", {
+    className: "skills-layout"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "radar-col"
+  }, /*#__PURE__*/React.createElement(RadarChart, {
+    skills: d.radarSkills,
+    dark: dark,
+    animate: visible
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "skill-cats-col"
+  }, d.skillCategories.map(cat => /*#__PURE__*/React.createElement("div", {
+    key: cat.label,
+    className: "skill-cat"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "skill-cat-label"
+  }, cat.label), /*#__PURE__*/React.createElement("div", {
+    className: "skill-tags"
+  }, cat.items.map(item => /*#__PURE__*/React.createElement("span", {
+    key: item,
+    className: "skill-tag"
+  }, item)))))))));
+}
+Object.assign(window, {
+  SkillsSection
+});
+</script>
+
+<script>
+/* portfolio-projects */
+const {
+  useState,
+  useEffect,
+  useRef
+} = React;
+const ALL_CATS = ['All', 'Security Tools', 'SOC', 'Cryptography', 'Automation', 'Machine Learning'];
+function GitLinkSVG() {
+  return /*#__PURE__*/React.createElement("svg", {
+    width: "14",
+    height: "14",
+    viewBox: "0 0 24 24",
+    fill: "currentColor"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+  }));
+}
+function FeaturedProject({
+  project
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "featured-project"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "featured-badge"
+  }, "Featured Project"), /*#__PURE__*/React.createElement("div", {
+    className: "featured-inner"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "featured-left"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "featured-lock"
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 60 60",
+    width: "60",
+    height: "60",
+    fill: "none"
+  }, /*#__PURE__*/React.createElement("rect", {
+    x: "8",
+    y: "26",
+    width: "44",
+    height: "30",
+    rx: "6",
+    fill: "var(--accent)",
+    opacity: "0.15"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "8",
+    y: "26",
+    width: "44",
+    height: "30",
+    rx: "6",
+    stroke: "var(--accent)",
+    strokeWidth: "2.5"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M18 26V20a12 12 0 0 1 24 0v6",
+    stroke: "var(--accent)",
+    strokeWidth: "2.5",
+    strokeLinecap: "round"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "30",
+    cy: "42",
+    r: "4",
+    fill: "var(--accent)"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "30",
+    y1: "46",
+    x2: "30",
+    y2: "50",
+    stroke: "var(--accent)",
+    strokeWidth: "2.5",
+    strokeLinecap: "round"
+  }))), /*#__PURE__*/React.createElement("h3", {
+    className: "featured-name"
+  }, project.name), /*#__PURE__*/React.createElement("p", {
+    className: "featured-tagline"
+  }, project.tagline), /*#__PURE__*/React.createElement("p", {
+    className: "featured-desc"
+  }, project.description), /*#__PURE__*/React.createElement("div", {
+    className: "featured-highlights"
+  }, project.highlights.map((h, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "highlight-item"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "highlight-tick"
+  }, "\u25B8"), /*#__PURE__*/React.createElement("span", null, h)))), /*#__PURE__*/React.createElement("div", {
+    className: "featured-stats"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-pill"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "stat-n"
+  }, project.stats.commits), /*#__PURE__*/React.createElement("span", {
+    className: "stat-l"
+  }, "commits")), /*#__PURE__*/React.createElement("div", {
+    className: "stat-pill"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "stat-n"
+  }, project.stats.releases), /*#__PURE__*/React.createElement("span", {
+    className: "stat-l"
+  }, "releases"))), /*#__PURE__*/React.createElement("div", {
+    className: "featured-tech"
+  }, project.tech.map(t => /*#__PURE__*/React.createElement("span", {
+    key: t,
+    className: "tech-tag accent"
+  }, t))), project.github && /*#__PURE__*/React.createElement("a", {
+    href: project.github,
+    target: "_blank",
+    rel: "noopener",
+    className: "project-github-btn"
+  }, /*#__PURE__*/React.createElement(GitLinkSVG, null), " View on GitHub"), project.live && /*#__PURE__*/React.createElement("a", {
+    href: project.live,
+    target: "_blank",
+    rel: "noopener",
+    className: "project-github-btn",
+    style: {
+      marginLeft: 10,
+      background: 'transparent',
+      border: '1.5px solid var(--accent)',
+      color: 'var(--accent)',
+      boxShadow: 'none'
+    }
+  }, "Live Demo \u2197")), /*#__PURE__*/React.createElement("div", {
+    className: "featured-right"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "featured-code-window"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fw-titlebar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fw-dots"
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null)), /*#__PURE__*/React.createElement("span", {
+    className: "fw-title"
+  }, "wireseal v1.0.0 \u2014 audited")), /*#__PURE__*/React.createElement("div", {
+    className: "fw-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fw-line"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "fw-prompt"
+  }, "$"), " ", /*#__PURE__*/React.createElement("span", {
+    className: "fw-cmd"
+  }, "sudo wireseal init --subnet 10.0.0.1/24")), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-comment"
+  }, "  # initializing v1.0.0 vault..."), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-out"
+  }, "  \u2713 Argon2id KDF: 256 MiB \xB7 t=13 \xB7 p=4"), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-out"
+  }, "  \u2713 Layer 1: ChaCha20-Poly1305 [inner]"), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-out"
+  }, "  \u2713 Layer 2: AES-256-GCM-SIV   [outer]"), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-out"
+  }, "  \u2713 HKDF-SHA512 \xB7 76-byte AAD binding"), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-out"
+  }, "  \u2713 Server keypair (vault-only)"), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-out"
+  }, "  \u2713 Firewall: nftables + NAT"), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-out"
+  }, "  \u2713 Hardening: fail2ban \xB7 mlock"), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-success"
+  }, "  \u2713 Zero plaintext secrets on disk"), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "fw-prompt"
+  }, "$"), " ", /*#__PURE__*/React.createElement("span", {
+    className: "fw-cmd"
+  }, "sudo wireseal add-client alice")), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-out"
+  }, "  \u2713 alice -> 10.0.0.2 (PSK: 32B)"), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-out"
+  }, "  \u2713 QR ready \xB7 auto-clears in 60s"), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-out"
+  }, "  \u2713 Audit log: SHA-256 chained"), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-blink"
+  }, "\u258B"))), /*#__PURE__*/React.createElement("div", {
+    className: "featured-lang-bar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lang-title"
+  }, "Languages \xB7 295 commits \xB7 59 releases"), [{
+    name: 'Python',
+    pct: 60.9,
+    color: '#d97706'
+  }, {
+    name: 'TypeScript',
+    pct: 32.7,
+    color: '#06b6d4'
+  }, {
+    name: 'Shell',
+    pct: 3.5,
+    color: '#8b5cf6'
+  }, {
+    name: 'Other',
+    pct: 2.9,
+    color: '#94a3b8'
+  }].map(l => /*#__PURE__*/React.createElement("div", {
+    key: l.name,
+    className: "lang-row"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "lang-name"
+  }, l.name), /*#__PURE__*/React.createElement("div", {
+    className: "lang-track"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "lang-fill",
+    style: {
+      width: l.pct + '%',
+      background: l.color
+    }
+  })), /*#__PURE__*/React.createElement("span", {
+    className: "lang-pct"
+  }, l.pct, "%")))))));
+}
+function ProjectCard({
+  project
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "project-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "pc-header"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "pc-cats"
+  }, project.category.map(c => /*#__PURE__*/React.createElement("span", {
+    key: c,
+    className: "pc-cat"
+  }, c))), /*#__PURE__*/React.createElement("h3", {
+    className: "pc-name"
+  }, project.name), /*#__PURE__*/React.createElement("p", {
+    className: "pc-tagline"
+  }, project.tagline)), /*#__PURE__*/React.createElement("div", {
+    className: "pc-body"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "pc-desc"
+  }, project.description), /*#__PURE__*/React.createElement("div", {
+    className: "pc-highlights"
+  }, project.highlights.map((h, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "pc-hl"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "pc-hl-dot"
+  }, "\u25B8"), h)))), /*#__PURE__*/React.createElement("div", {
+    className: "pc-footer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "pc-tech"
+  }, project.tech.map(t => /*#__PURE__*/React.createElement("span", {
+    key: t,
+    className: "tech-tag"
+  }, t))), /*#__PURE__*/React.createElement("div", {
+    className: "pc-actions"
+  }, project.github && /*#__PURE__*/React.createElement("a", {
+    href: project.github,
+    target: "_blank",
+    rel: "noopener",
+    className: "pc-link",
+    title: "View on GitHub"
+  }, /*#__PURE__*/React.createElement(GitLinkSVG, null)))));
+}
+function ShowcaseProject({
+  project,
+  flip
+}) {
+  const termLines = project.id === 'log-analyzer' ? [{
+    type: 'cmd',
+    text: 'python main.py --input sample.evtx'
+  }, {
+    type: 'comment',
+    text: '  # parsing Windows Event Log (evtx)...'
+  }, {
+    type: 'out',
+    text: '  [4625] failed login: admin  src=10.0.0.45'
+  }, {
+    type: 'out',
+    text: '  [4625] failed login x12 in 60s'
+  }, {
+    type: 'alert',
+    text: '  WARN Brute Force  [TA0006]'
+  }, {
+    type: 'out',
+    text: '  [4624] success: admin  src=10.0.0.45'
+  }, {
+    type: 'alert',
+    text: '  WARN Login After Failures  [TA0008]'
+  }, {
+    type: 'out',
+    text: '  [4672] special privileges: admin'
+  }, {
+    type: 'alert',
+    text: '  WARN Privilege Escalation  [TA0004]'
+  }, {
+    type: 'success',
+    text: '  3 correlated alerts -> report.html'
+  }, {
+    type: 'success',
+    text: '  alerts.json + alerts.csv saved'
+  }] : [{
+    type: 'cmd',
+    text: 'python file_sig_analyzer.py unknown.bin'
+  }, {
+    type: 'comment',
+    text: '  # reading magic bytes from binary...'
+  }, {
+    type: 'out',
+    text: '  offset 0x00: PK\\x03\\x04 -> ZIP family'
+  }, {
+    type: 'out',
+    text: '  [Content_Types].xml found'
+  }, {
+    type: 'out',
+    text: '  word/document.xml -> DOCX body'
+  }, {
+    type: 'success',
+    text: '  RESULT: Microsoft Word (.docx)'
+  }, {
+    type: 'comment',
+    text: '  # file had no extension'
+  }, {
+    type: 'cmd',
+    text: 'python file_sig_analyzer.py archive.jpg'
+  }, {
+    type: 'out',
+    text: '  PK\\x03\\x04 -> ZIP / EPUB / DOCX'
+  }, {
+    type: 'out',
+    text: '  ambiguous: 3 signatures match'
+  }, {
+    type: 'out',
+    text: '  creating: archive_zip.zip'
+  }, {
+    type: 'success',
+    text: '  report saved -> analysis.txt'
+  }];
+  const filename = project.id === 'log-analyzer' ? 'main.py — alert-triage' : 'file_sig_analyzer.py';
+  const icon = project.id === 'log-analyzer' ? /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 60 60",
+    width: "56",
+    height: "56",
+    fill: "none"
+  }, /*#__PURE__*/React.createElement("rect", {
+    x: "4",
+    y: "8",
+    width: "52",
+    height: "44",
+    rx: "6",
+    fill: "var(--accent)",
+    opacity: "0.10"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "4",
+    y: "8",
+    width: "52",
+    height: "44",
+    rx: "6",
+    stroke: "var(--accent)",
+    strokeWidth: "2.2"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "14",
+    y1: "22",
+    x2: "46",
+    y2: "22",
+    stroke: "var(--accent)",
+    strokeWidth: "1.8",
+    strokeLinecap: "round",
+    opacity: "0.5"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "14",
+    y1: "30",
+    x2: "38",
+    y2: "30",
+    stroke: "var(--accent)",
+    strokeWidth: "1.8",
+    strokeLinecap: "round",
+    opacity: "0.5"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "14",
+    y1: "38",
+    x2: "42",
+    y2: "38",
+    stroke: "var(--accent)",
+    strokeWidth: "1.8",
+    strokeLinecap: "round",
+    opacity: "0.5"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "46",
+    cy: "38",
+    r: "8",
+    fill: "var(--accent)",
+    opacity: "0.18"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "46",
+    cy: "38",
+    r: "8",
+    stroke: "var(--accent)",
+    strokeWidth: "2"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "46",
+    y1: "34",
+    x2: "46",
+    y2: "39",
+    stroke: "var(--accent)",
+    strokeWidth: "2",
+    strokeLinecap: "round"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "46",
+    cy: "41.5",
+    r: "1.2",
+    fill: "var(--accent)"
+  })) : /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 60 60",
+    width: "56",
+    height: "56",
+    fill: "none"
+  }, /*#__PURE__*/React.createElement("rect", {
+    x: "6",
+    y: "18",
+    width: "48",
+    height: "38",
+    rx: "6",
+    fill: "var(--accent)",
+    opacity: "0.12"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "6",
+    y: "18",
+    width: "48",
+    height: "38",
+    rx: "6",
+    stroke: "var(--accent)",
+    strokeWidth: "2.2"
+  }), /*#__PURE__*/React.createElement("rect", {
+    x: "18",
+    y: "8",
+    width: "24",
+    height: "12",
+    rx: "4",
+    fill: "none",
+    stroke: "var(--accent)",
+    strokeWidth: "2.2"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "20",
+    y1: "34",
+    x2: "40",
+    y2: "34",
+    stroke: "var(--accent)",
+    strokeWidth: "2",
+    strokeLinecap: "round"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "20",
+    y1: "40",
+    x2: "34",
+    y2: "40",
+    stroke: "var(--accent)",
+    strokeWidth: "2",
+    strokeLinecap: "round"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "44",
+    cy: "26",
+    r: "5",
+    fill: "var(--accent)",
+    opacity: "0.8"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "47.5",
+    y1: "29.5",
+    x2: "51",
+    y2: "33",
+    stroke: "var(--accent)",
+    strokeWidth: "2",
+    strokeLinecap: "round"
+  }));
+  const terminal = /*#__PURE__*/React.createElement("div", {
+    className: "showcase-right"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "featured-code-window"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fw-titlebar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fw-dots"
+  }, /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null), /*#__PURE__*/React.createElement("span", null)), /*#__PURE__*/React.createElement("span", {
+    className: "fw-title"
+  }, filename)), /*#__PURE__*/React.createElement("div", {
+    className: "fw-body"
+  }, termLines.map((l, i) => {
+    if (l.type === 'cmd') return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "fw-line"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "fw-prompt"
+    }, "$"), " ", /*#__PURE__*/React.createElement("span", {
+      className: "fw-cmd"
+    }, l.text));
+    if (l.type === 'comment') return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "fw-line fw-comment"
+    }, l.text);
+    if (l.type === 'out') return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "fw-line fw-out"
+    }, l.text);
+    if (l.type === 'alert') return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "fw-line fw-alert"
+    }, l.text);
+    if (l.type === 'success') return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "fw-line fw-success"
+    }, l.text);
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "fw-line"
+    }, "\xA0");
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "fw-line fw-blink"
+  }, "\u258B"))));
+  const info = /*#__PURE__*/React.createElement("div", {
+    className: "featured-left showcase-info"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "featured-lock"
+  }, icon), /*#__PURE__*/React.createElement("h3", {
+    className: "featured-name"
+  }, project.name), /*#__PURE__*/React.createElement("p", {
+    className: "featured-tagline"
+  }, project.tagline), /*#__PURE__*/React.createElement("p", {
+    className: "featured-desc"
+  }, project.description), /*#__PURE__*/React.createElement("div", {
+    className: "featured-highlights"
+  }, project.highlights.map((h, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "highlight-item"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "highlight-tick"
+  }, "\u25B8"), /*#__PURE__*/React.createElement("span", null, h)))), /*#__PURE__*/React.createElement("div", {
+    className: "featured-tech"
+  }, project.tech.map(t => /*#__PURE__*/React.createElement("span", {
+    key: t,
+    className: "tech-tag accent"
+  }, t))), project.github && /*#__PURE__*/React.createElement("a", {
+    href: project.github,
+    target: "_blank",
+    rel: "noopener",
+    className: "project-github-btn",
+    style: {
+      marginTop: 18
+    }
+  }, /*#__PURE__*/React.createElement(GitLinkSVG, null), " View on GitHub"));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "showcase-project"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "featured-inner showcase-inner"
+  }, flip ? /*#__PURE__*/React.createElement(React.Fragment, null, info, terminal) : /*#__PURE__*/React.createElement(React.Fragment, null, terminal, info)));
+}
+function ProjectsSection() {
+  const d = window.PORTFOLIO;
+  const [filter, setFilter] = useState('All');
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        setVisible(true);
+        obs.disconnect();
+      }
+    }, {
+      threshold: 0.1
+    });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  const featured = d.projects.find(p => p.featured);
+  const showcases = d.projects.filter(p => p.showcase);
+  const rest = d.projects.filter(p => !p.featured && !p.showcase && (filter === 'All' || p.category.includes(filter)));
+  return /*#__PURE__*/React.createElement("section", {
+    id: "projects",
+    className: "section projects-section",
+    ref: ref
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `section-inner fade-up ${visible ? 'visible' : ''}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-header"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "section-tag"
+  }, "Portfolio"), /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "Projects")), /*#__PURE__*/React.createElement(FeaturedProject, {
+    project: featured
+  }), showcases.map((p, i) => /*#__PURE__*/React.createElement(ShowcaseProject, {
+    key: p.id,
+    project: p,
+    flip: i % 2 === 1
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "projects-subheader"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "projects-sub-title"
+  }, "More Projects"), /*#__PURE__*/React.createElement("div", {
+    className: "filter-btns"
+  }, ALL_CATS.map(cat => /*#__PURE__*/React.createElement("button", {
+    key: cat,
+    className: `filter-btn ${filter === cat ? 'active' : ''}`,
+    onClick: () => setFilter(cat)
+  }, cat)))), /*#__PURE__*/React.createElement("div", {
+    className: "projects-grid"
+  }, rest.map(p => /*#__PURE__*/React.createElement(ProjectCard, {
+    key: p.id,
+    project: p
+  })))));
+}
+Object.assign(window, {
+  ProjectsSection
+});
+</script>
+
+<script>
+/* portfolio-more */
+const {
+  useEffect,
+  useRef,
+  useState
+} = React;
+function useFadeIn() {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        setVisible(true);
+        obs.disconnect();
+      }
+    }, {
+      threshold: 0.1
+    });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, visible];
+}
+function EducationSection() {
+  const d = window.PORTFOLIO;
+  const [ref, visible] = useFadeIn();
+  return /*#__PURE__*/React.createElement("section", {
+    id: "education",
+    className: "section education-section",
+    ref: ref
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `section-inner fade-up ${visible ? 'visible' : ''}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-header"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "section-tag"
+  }, "Academic Background"), /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "Education")), /*#__PURE__*/React.createElement("div", {
+    className: "edu-timeline"
+  }, d.education.map((edu, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "edu-item"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "edu-timeline-col"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "edu-dot"
+  }), i < d.education.length - 1 && /*#__PURE__*/React.createElement("div", {
+    className: "edu-line"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "edu-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "edu-header"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "edu-years"
+  }, edu.years), /*#__PURE__*/React.createElement("div", {
+    className: "edu-gpa-badge"
+  }, "GPA ", edu.gpa)), /*#__PURE__*/React.createElement("h3", {
+    className: "edu-school"
+  }, edu.school), /*#__PURE__*/React.createElement("div", {
+    className: "edu-location"
+  }, edu.location), /*#__PURE__*/React.createElement("div", {
+    className: "edu-degree"
+  }, edu.degree), /*#__PURE__*/React.createElement("div", {
+    className: "edu-courses"
+  }, edu.courses.map(c => /*#__PURE__*/React.createElement("span", {
+    key: c,
+    className: "course-tag"
+  }, c)))))))));
+}
+function CertsSection() {
+  const d = window.PORTFOLIO;
+  const [ref, visible] = useFadeIn();
+  return /*#__PURE__*/React.createElement("section", {
+    id: "certs",
+    className: "section certs-section",
+    ref: ref
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `section-inner fade-up ${visible ? 'visible' : ''}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-header"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "section-tag"
+  }, "Credentials"), /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "Certifications & Training")), /*#__PURE__*/React.createElement("div", {
+    className: "certs-grid"
+  }, d.certifications.map((cert, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: `cert-card ${cert.inProgress ? 'in-progress' : ''}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cert-badge"
+  }, cert.badge), /*#__PURE__*/React.createElement("div", {
+    className: "cert-info"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "cert-name"
+  }, cert.name), /*#__PURE__*/React.createElement("div", {
+    className: "cert-org"
+  }, cert.org)), cert.inProgress && /*#__PURE__*/React.createElement("span", {
+    className: "cert-status"
+  }, "In Progress"), cert.training && !cert.inProgress && /*#__PURE__*/React.createElement("span", {
+    className: "cert-training"
+  }, "Trained"), !cert.inProgress && !cert.training && /*#__PURE__*/React.createElement("span", {
+    className: "cert-check"
+  }, "\u2713"))))));
+}
+function ExtrasSection() {
+  const d = window.PORTFOLIO;
+  const [ref, visible] = useFadeIn();
+  return /*#__PURE__*/React.createElement("section", {
+    id: "extras",
+    className: "section extras-section",
+    ref: ref
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `section-inner fade-up ${visible ? 'visible' : ''}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-header"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "section-tag"
+  }, "Beyond the Classroom"), /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "Experience & Activities")), /*#__PURE__*/React.createElement("div", {
+    className: "extras-list"
+  }, d.extracurricular.map((item, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "extra-item"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "extra-index"
+  }, "0", i + 1), /*#__PURE__*/React.createElement("div", {
+    className: "extra-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "extra-header"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "extra-title"
+  }, item.title), /*#__PURE__*/React.createElement("div", {
+    className: "extra-meta"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "extra-org"
+  }, item.org), item.date && /*#__PURE__*/React.createElement("span", {
+    className: "extra-date"
+  }, item.date))), /*#__PURE__*/React.createElement("p", {
+    className: "extra-desc"
+  }, item.description)))))));
+}
+function ContactSection() {
+  const [ref, visible] = useFadeIn();
+  return /*#__PURE__*/React.createElement("section", {
+    id: "contact",
+    className: "section contact-section",
+    ref: ref
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `section-inner fade-up ${visible ? 'visible' : ''}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-header"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "section-tag"
+  }, "Get In Touch"), /*#__PURE__*/React.createElement("h2", {
+    className: "section-title"
+  }, "Contact")), /*#__PURE__*/React.createElement("div", {
+    className: "contact-layout"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "contact-left"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "contact-intro"
+  }, "I'm actively seeking entry-level SOC Analyst, Network Security Analyst, or related cybersecurity roles. If you have an opportunity or just want to connect \u2014 reach out."), /*#__PURE__*/React.createElement("div", {
+    className: "contact-links"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://github.com/prashanth-7861",
+    target: "_blank",
+    rel: "noopener",
+    className: "contact-link-card"
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "22",
+    height: "22",
+    viewBox: "0 0 24 24",
+    fill: "currentColor"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "clc-label"
+  }, "GitHub"), /*#__PURE__*/React.createElement("div", {
+    className: "clc-value"
+  }, "github.com/prashanth-7861"))), /*#__PURE__*/React.createElement("a", {
+    href: "https://www.linkedin.com/in/mudigondaprashanth",
+    target: "_blank",
+    rel: "noopener",
+    className: "contact-link-card"
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "22",
+    height: "22",
+    viewBox: "0 0 24 24",
+    fill: "currentColor"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "clc-label"
+  }, "LinkedIn"), /*#__PURE__*/React.createElement("div", {
+    className: "clc-value"
+  }, "linkedin.com/in/mudigondaprashanth"))), /*#__PURE__*/React.createElement("div", {
+    className: "contact-link-card no-link"
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "22",
+    height: "22",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "12",
+    cy: "10",
+    r: "3"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "clc-label"
+  }, "Location"), /*#__PURE__*/React.createElement("div", {
+    className: "clc-value"
+  }, "Alpharetta, GA, USA"))))), /*#__PURE__*/React.createElement("div", {
+    className: "contact-right"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "contact-available-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "avail-dot"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "avail-text"
+  }, /*#__PURE__*/React.createElement("strong", null, "Open to Opportunities"), /*#__PURE__*/React.createElement("p", null, "SOC Analyst \xB7 Network Security Analyst \xB7 Security Operations"))), /*#__PURE__*/React.createElement("div", {
+    className: "contact-skills-highlight"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "csh-label"
+  }, "Ready to contribute in:"), ['Threat Detection & Analysis', 'Network Traffic Analysis', 'Incident Response', 'Penetration Testing', 'Digital Forensics'].map(s => /*#__PURE__*/React.createElement("div", {
+    key: s,
+    className: "csh-item"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "csh-arrow"
+  }, "\u2192"), s)))))), /*#__PURE__*/React.createElement("div", {
+    className: "footer-note"
+  }, "Built with precision by Prashanth Mudigonda \xB7 ", new Date().getFullYear()));
+}
+Object.assign(window, {
+  EducationSection,
+  CertsSection,
+  ExtrasSection,
+  ContactSection
+});
+</script>
+
+<script>
+/* portfolio-terminal */
+const {
+  useState,
+  useEffect,
+  useRef
+} = React;
+const COMMANDS = {
+  whoami: () => ['  prashanth mudigonda', '  ms cybersecurity · auburn university · 3.79 gpa', '  alpharetta, ga, usa', ''],
+  help: () => ['  available commands:', '    whoami       — identity & credentials', '    ls           — list projects & skills', '    skills       — core competencies', '    nmap         — run a demo scan', '    wireseal     — project info', '    certifications — view certs', '    clear        — clear terminal', '    exit         — close terminal', ''],
+  ls: () => ['  drwxr-xr-x  projects/', '    ├── wireseal/', '    ├── aes-engine/', '    ├── file-sig-analyzer/', '    ├── covid-ml-detector/', '    └── subway-forecaster/', '', '  drwxr-xr-x  skills/', '    ├── linux-os-mastery', '    ├── network-security', '    ├── penetration-testing', '    ├── digital-forensics', '    └── cryptography', ''],
+  skills: () => ['  ┌─ core competencies ─────────────────────────────┐', '  │  linux / os mastery        ████████████ 92%     │', '  │  network security          ███████████  88%     │', '  │  python scripting          ██████████   85%     │', '  │  penetration testing       █████████    82%     │', '  │  cryptography              █████████    80%     │', '  │  digital forensics         █████████    78%     │', '  │  malware analysis          ████████     76%     │', '  │  soc / siem                ████████     72%     │', '  └─────────────────────────────────────────────────┘', ''],
+  nmap: () => ['  starting nmap 7.94 ( https://nmap.org )', '  host: localhost (127.0.0.1)', '  scanning 65535 ports ...', '', '  PORT      STATE    SERVICE     VERSION', '  22/tcp    open     ssh         OpenSSH 9.3', '  51820/udp open     wireguard   WireSeal v1.0.0 (audited)', '  8080/tcp  filtered http        [dashboard — localhost-only]', '', '  nmap done: 1 IP address · 3 interesting ports', '  vault status: 🔒 encrypted (AES-256-GCM-SIV + ChaCha20-Poly1305)', '  audit log: SHA-256 hash-chained · tamper-evident', ''],
+  wireseal: () => ['  ╔══ WireSeal v1.0.0 — security audited ════════════╗', '  ║  zero-trust wireguard gateway · zero plaintext   ║', '  ╠══════════════════════════════════════════════════╣', '  ║  vault:       dual-layer AEAD (Argon2id + HKDF)  ║', '  ║  layer 1:     ChaCha20-Poly1305 [inner]          ║', '  ║  layer 2:     AES-256-GCM-SIV   [outer]          ║', '  ║  2fa:         TOTP RFC 6238 · PBKDF2 backup     ║', '  ║  access:      RBAC · 15+ privileges · TTL       ║', '  ║  audit:       SHA-256 hash-chained log          ║', '  ║  platforms:   linux · macos · windows · rpi     ║', '  ║  commits:     295   releases: 59                 ║', '  ╚══════════════════════════════════════════════════╝', '  github: https://github.com/prashanth-7861/WireSeal', '  audit:  SECURITY_AUDIT_v1.0.0.md', '  site:   https://wireseal.vercel.app', ''],
+  certifications: () => ['  ✓  C|EH v12 — Certified Ethical Hacker', '     EC-Council Accredited Training Center', '', '  ⟳  Google Cybersecurity Professional Certificate', '     Google via Coursera  [in progress]', '', '  ✓  Mastercard Cybersecurity Virtual Experience', '     Forage · March 2023', '', '  ✓  Ethical Hacking A–Z: Beginner to Expert', '     Anthony Timbers — Udemy', '']
+};
+function Terminal({
+  open,
+  onClose
+}) {
+  const [history, setHistory] = useState([{
+    type: 'output',
+    lines: ['  ██╗    ██╗██╗██████╗ ███████╗███████╗███████╗ █████╗ ██╗', '  ██║    ██║██║██╔══██╗██╔════╝██╔════╝██╔════╝██╔══██╗██║', '  ██║ █╗ ██║██║██████╔╝█████╗  ███████╗█████╗  ███████║██║', '  ██║███╗██║██║██╔══██╗██╔══╝  ╚════██║██╔══╝  ██╔══██║██║', '  ╚███╔███╔╝██║██║  ██║███████╗███████║███████╗██║  ██║███████╗', '   ╚══╝╚══╝ ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝', '', '  prashanth mudigonda — cybersecurity portfolio terminal', '  type "help" for available commands', '']
+  }]);
+  const [input, setInput] = useState('');
+  const [cmdHistory, setCmdHistory] = useState([]);
+  const [cmdIdx, setCmdIdx] = useState(-1);
+  const inputRef = useRef(null);
+  const bottomRef = useRef(null);
+  useEffect(() => {
+    if (open && inputRef.current) {
+      setTimeout(() => inputRef.current && inputRef.current.focus(), 100);
+    }
+  }, [open]);
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollTop = bottomRef.current.scrollHeight;
+    }
+  }, [history]);
+  useEffect(() => {
+    const handler = e => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose]);
+  const runCommand = cmd => {
+    const trimmed = cmd.trim().toLowerCase().split(' ')[0];
+    const newHistory = [...history, {
+      type: 'input',
+      line: cmd
+    }];
+    if (trimmed === 'clear') {
+      setHistory([]);
+      return;
+    }
+    if (trimmed === 'exit') {
+      onClose();
+      return;
+    }
+    if (COMMANDS[trimmed]) {
+      newHistory.push({
+        type: 'output',
+        lines: COMMANDS[trimmed]()
+      });
+    } else if (trimmed === '') {
+      // empty
+    } else {
+      newHistory.push({
+        type: 'output',
+        lines: [`  bash: ${cmd}: command not found. type "help" for commands.`, '']
+      });
+    }
+    setHistory(newHistory);
+    setCmdHistory(prev => [cmd, ...prev]);
+    setCmdIdx(-1);
+  };
+  const handleKey = e => {
+    if (e.key === 'Enter') {
+      runCommand(input);
+      setInput('');
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const next = Math.min(cmdIdx + 1, cmdHistory.length - 1);
+      setCmdIdx(next);
+      if (cmdHistory[next]) setInput(cmdHistory[next]);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const next = Math.max(cmdIdx - 1, -1);
+      setCmdIdx(next);
+      setInput(next === -1 ? '' : cmdHistory[next]);
+    }
+  };
+  if (!open) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "terminal-overlay",
+    onClick: e => e.target === e.currentTarget && onClose()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "terminal-window"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "terminal-titlebar"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "terminal-dots"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "tdot tdot-red",
+    onClick: onClose
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "tdot tdot-yellow"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "tdot tdot-green"
+  })), /*#__PURE__*/React.createElement("span", {
+    className: "terminal-title"
+  }, "prashanth@wireseal:~"), /*#__PURE__*/React.createElement("span", null)), /*#__PURE__*/React.createElement("div", {
+    className: "terminal-body",
+    ref: bottomRef,
+    onClick: () => inputRef.current && inputRef.current.focus()
+  }, history.map((h, i) => h.type === 'input' ? /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "t-input-line"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "t-prompt"
+  }, "prashanth@portfolio:~$"), /*#__PURE__*/React.createElement("span", {
+    className: "t-cmd"
+  }, " ", h.line)) : /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "t-output"
+  }, h.lines.map((l, j) => /*#__PURE__*/React.createElement("div", {
+    key: j,
+    className: "t-line"
+  }, l)))), /*#__PURE__*/React.createElement("div", {
+    className: "t-input-line"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "t-prompt"
+  }, "prashanth@portfolio:~$"), /*#__PURE__*/React.createElement("input", {
+    ref: inputRef,
+    className: "t-input",
+    value: input,
+    onChange: e => setInput(e.target.value),
+    onKeyDown: handleKey,
+    spellCheck: false,
+    autoComplete: "off"
+  })))));
+}
+Object.assign(window, {
+  Terminal
+});
+</script>
+
+<script>
+/* portfolio-app */
+const {
+  useState,
+  useEffect
+} = React;
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "blue",
+  "sidebarWide": false,
+  "animationSpeed": "normal",
+  "showLabHours": true
+} /*EDITMODE-END*/;
+function App() {
+  const [dark, setDark] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
+  const [termOpen, setTermOpen] = useState(false);
+  const [tweaks, setTweakState] = useState(TWEAK_DEFAULTS);
+
+  // Ctrl+` shortcut for terminal
+  useEffect(() => {
+    const handler = e => {
+      if (e.ctrlKey && e.key === '`') {
+        e.preventDefault();
+        setTermOpen(t => !t);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  // Theme on document
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  }, [dark]);
+
+  // Scroll spy
+  useEffect(() => {
+    const ids = ['hero', 'skills', 'projects', 'education', 'certs', 'extras', 'contact'];
+    const observers = ids.map(id => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      const obs = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) setActiveSection(id);
+      }, {
+        threshold: 0.25,
+        rootMargin: '-80px 0px -40% 0px'
+      });
+      obs.observe(el);
+      return obs;
+    });
+    return () => observers.forEach(obs => obs && obs.disconnect());
+  }, []);
+
+  // Tweaks protocol
+  useEffect(() => {
+    const handler = e => {
+      if (e.data?.type === '__activate_edit_mode') setTweakOpen(true);
+      if (e.data?.type === '__deactivate_edit_mode') setTweakOpen(false);
+    };
+    window.addEventListener('message', handler);
+    window.parent.postMessage({
+      type: '__edit_mode_available'
+    }, '*');
+    return () => window.removeEventListener('message', handler);
+  }, []);
+  const [tweakOpen, setTweakOpen] = useState(false);
+  const setTweak = (key, value) => {
+    const next = typeof key === 'object' ? {
+      ...tweaks,
+      ...key
+    } : {
+      ...tweaks,
+      [key]: value
+    };
+    setTweakState(next);
+    window.parent.postMessage({
+      type: '__edit_mode_set_keys',
+      edits: next
+    }, '*');
+  };
+
+  // Apply accent CSS var
+  useEffect(() => {
+    const accents = {
+      blue: {
+        main: '#d97706',
+        light: '#fbbf24',
+        glow: 'rgba(217,119,6,0.18)'
+      },
+      teal: {
+        main: '#0891b2',
+        light: '#22d3ee',
+        glow: 'rgba(8,145,178,0.18)'
+      },
+      purple: {
+        main: '#7c3aed',
+        light: '#a78bfa',
+        glow: 'rgba(124,58,237,0.18)'
+      },
+      amber: {
+        main: '#d97706',
+        light: '#fbbf24',
+        glow: 'rgba(217,119,6,0.18)'
+      }
+    };
+    const a = accents[tweaks.accent] || accents.amber;
+    document.documentElement.style.setProperty('--accent', dark ? a.light : a.main);
+    document.documentElement.style.setProperty('--accent-glow', a.glow);
+    document.documentElement.style.setProperty('--accent-light', a.light);
+  }, [tweaks.accent, dark]);
+  return /*#__PURE__*/React.createElement("div", {
+    className: `portfolio-root${tweaks.sidebarWide ? ' wide-sidebar' : ''}`
+  }, /*#__PURE__*/React.createElement(Sidebar, {
+    dark: dark,
+    setDark: setDark,
+    activeSection: activeSection,
+    onTerminal: () => setTermOpen(true)
+  }), /*#__PURE__*/React.createElement("main", {
+    className: "main-content"
+  }, /*#__PURE__*/React.createElement(HeroSection, {
+    dark: dark
+  }), /*#__PURE__*/React.createElement(SkillsSection, {
+    dark: dark
+  }), /*#__PURE__*/React.createElement(ProjectsSection, null), /*#__PURE__*/React.createElement(EducationSection, null), /*#__PURE__*/React.createElement(CertsSection, null), /*#__PURE__*/React.createElement(ExtrasSection, null), /*#__PURE__*/React.createElement(ContactSection, null)), /*#__PURE__*/React.createElement(Terminal, {
+    open: termOpen,
+    onClose: () => setTermOpen(false)
+  }), tweakOpen && /*#__PURE__*/React.createElement(TweaksPanel, {
+    onClose: () => {
+      setTweakOpen(false);
+      window.parent.postMessage({
+        type: '__edit_mode_dismissed'
+      }, '*');
+    }
+  }, /*#__PURE__*/React.createElement(TweakSection, {
+    title: "Accent Color"
+  }, /*#__PURE__*/React.createElement(TweakRadio, {
+    value: tweaks.accent,
+    options: [{
+      value: 'blue',
+      label: 'Blue'
+    }, {
+      value: 'teal',
+      label: 'Teal'
+    }, {
+      value: 'purple',
+      label: 'Purple'
+    }, {
+      value: 'amber',
+      label: 'Amber'
+    }],
+    onChange: v => setTweak('accent', v)
+  })), /*#__PURE__*/React.createElement(TweakSection, {
+    title: "Layout"
+  }, /*#__PURE__*/React.createElement(TweakToggle, {
+    label: "Wide Sidebar",
+    value: tweaks.sidebarWide,
+    onChange: v => setTweak('sidebarWide', v)
+  })), /*#__PURE__*/React.createElement(TweakSection, {
+    title: "Content"
+  }, /*#__PURE__*/React.createElement(TweakToggle, {
+    label: "Show Lab Hours badge",
+    value: tweaks.showLabHours,
+    onChange: v => setTweak('showLabHours', v)
+  }))));
+}
+ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
+</script>
+
+<body>
+<div id="root"></div>
+
+
+
+
+
+
+
+
+
+</body>
+</html>

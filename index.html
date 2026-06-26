@@ -470,11 +470,11 @@ img { display: block; max-width: 100%; }
 }
 .featured-inner {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: minmax(0, 1fr) 360px;
   gap: 0;
 }
-.featured-left { padding: 36px 36px 36px 36px; border-right: 1px solid var(--border); }
-.featured-right { padding: 24px; display: flex; flex-direction: column; gap: 20px; background: var(--surface2); }
+.featured-left { padding: 36px 36px 36px 36px; border-right: 1px solid var(--border); min-width: 0; }
+.featured-right { padding: 24px; display: flex; flex-direction: column; gap: 20px; background: var(--surface2); min-width: 0; }
 
 .featured-lock { margin-bottom: 16px; }
 .featured-name {
@@ -499,8 +499,9 @@ img { display: block; max-width: 100%; }
   text-wrap: pretty;
 }
 .featured-highlights { display: flex; flex-direction: column; gap: 7px; margin-bottom: 20px; }
-.highlight-item { display: flex; gap: 10px; font-size: 13.5px; color: var(--text2); align-items: baseline; }
-.highlight-tick { color: var(--accent); flex-shrink: 0; font-size: 11px; }
+.highlight-item { display: flex; gap: 10px; font-size: 13.5px; color: var(--text2); align-items: flex-start; }
+.highlight-item > span:last-child { flex: 1; min-width: 0; }
+.highlight-tick { color: var(--accent); flex-shrink: 0; font-size: 11px; line-height: 1.7; }
 .featured-stats { display: flex; gap: 12px; margin-bottom: 18px; }
 .stat-pill {
   display: flex; flex-direction: column; align-items: center;
@@ -556,8 +557,10 @@ img { display: block; max-width: 100%; }
 .fw-dots { display: flex; gap: 5px; }
 .fw-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
 .fw-title { font-size: 11px; color: var(--text3); }
-.fw-body { padding: 14px 14px; line-height: 1.7; overflow-x: hidden; }
-.fw-line { white-space: pre; }
+.fw-body { padding: 14px 14px; line-height: 1.7; overflow-x: hidden; max-height: 460px; overflow-y: auto; }
+.fw-body::-webkit-scrollbar { width: 6px; }
+.fw-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+.fw-line { white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; }
 .fw-prompt { color: var(--accent); font-weight: 500; }
 .fw-cmd { color: var(--text); }
 .fw-comment { color: var(--text3); }
@@ -943,14 +946,14 @@ img { display: block; max-width: 100%; }
 </head>
 <body>
 <div id="root"></div>
-<script src="portfolio-data.js?v=5"></script>
-<script type="text/babel" src="tweaks-panel.jsx?v=2"></script>
-<script type="text/babel" src="portfolio-sidebar.jsx?v=2"></script>
-<script type="text/babel" src="portfolio-hero.jsx?v=2"></script>
-<script type="text/babel" src="portfolio-skills.jsx?v=2"></script>
-<script type="text/babel" src="portfolio-projects.jsx?v=2"></script>
-<script type="text/babel" src="portfolio-more.jsx?v=2"></script>
-<script type="text/babel" src="portfolio-terminal.jsx?v=2"></script>
-<script type="text/babel" src="portfolio-app.jsx?v=2"></script>
+<script src="portfolio-data.js?v=6"></script>
+<script type="text/babel" src="tweaks-panel.jsx?v=6"></script>
+<script type="text/babel" src="portfolio-sidebar.jsx?v=6"></script>
+<script type="text/babel" src="portfolio-hero.jsx?v=6"></script>
+<script type="text/babel" src="portfolio-skills.jsx?v=6"></script>
+<script type="text/babel" src="portfolio-projects.jsx?v=6"></script>
+<script type="text/babel" src="portfolio-more.jsx?v=6"></script>
+<script type="text/babel" src="portfolio-terminal.jsx?v=6"></script>
+<script type="text/babel" src="portfolio-app.jsx?v=6"></script>
 </body>
 </html>

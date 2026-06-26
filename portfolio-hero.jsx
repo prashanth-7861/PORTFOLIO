@@ -109,7 +109,7 @@ function HeroSection({ dark }) {
 
       {/* Floating badges */}
       <div className="hero-badges">
-        {['C|EH v12', 'Kali Linux', 'Wireshark', 'WireGuard', 'Metasploit', 'Autopsy', 'AES-256'].map(b => (
+        {['C|EH v12', 'MITRE ATT&CK', 'Splunk / SIEM', 'WireGuard', 'Argon2id', 'Metasploit', 'Autopsy'].map(b => (
           <span key={b} className="hero-badge">{b}</span>
         ))}
       </div>
